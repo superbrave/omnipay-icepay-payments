@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<ruleset>
+    <autoload>vendor/autoload.php</autoload>
+    <file>.</file>
+
+    <!-- Show sniff names and show progress -->
+    <arg value="sp"/>
+    <!-- Only validate files with the php extension -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Include Superbrave coding standards -->
+    <rule ref="vendor/superbrave/coding-standards/Superbrave">
+        <!-- File comments are a bit useless, the class comments already describe what's happening -->
+        <exclude name="PEAR.Commenting.FileComment"/>
+    </rule>
+
+    <!-- Exclude the vendor and cache folders, we can't be responsible for 3rd party and generated code -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>app/cache/*</exclude-pattern>
+
+    <rule ref="Generic.Commenting">
+        <!-- @TODO: Look into these excludes -->
+        <exclude name="Generic.Commenting.DocComment.ShortNotCapital"/>
+        <exclude name="Generic.Commenting.DocComment.LongNotCapital"/>
+        <exclude name="Generic.Commenting.DocComment.NonParamGroup"/>
+        <exclude name="Generic.Commenting.DocComment.ParamNotFirst"/>
+
+        <!-- @TODO: Patch these excludes -->
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen"/>
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose"/>
+        <exclude name="Generic.Commenting.DocComment.SpacingBeforeShort"/>
+        <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags"/>
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent"/>
+
+        <!-- Don't break on todo items -->
+        <exclude name="Generic.Commenting.Todo"/>
+    </rule>
+</ruleset>

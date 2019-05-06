@@ -21,3 +21,5 @@
 
 # Common ignores
 .DS_Store
+
+/vendor/

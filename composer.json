@@ -1,0 +1,34 @@
+{
+    "name": "superbrave/omnipay-icepay-payments",
+    "type": "library",
+    "description": "Icepay Payments support for Omnipay payment processing library.",
+    "keywords": [
+        "icepay",
+        "gateway",
+        "merchant",
+        "omnipay",
+        "pay",
+        "payment",
+        "purchase"
+    ],
+    "homepage": "https://github.com/superbrave/omnipay-icepay-payments",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kiet Tran",
+            "email": "kt@superbrave.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\IcepayPayments\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.0",
+        "league/omnipay": "^3.0"
+    },
+    "require-dev": {
+        "superbrave/coding-standards": "^0.2.0"
+    }
+}
