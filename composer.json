@@ -24,11 +24,16 @@
             "Omnipay\\IcepayPayments\\": "src/"
         }
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "require": {
         "php": "^7.0",
         "league/omnipay": "^3.0"
     },
     "require-dev": {
-        "superbrave/coding-standards": "^0.2.0"
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "superbrave/coding-standards": "^0.2.0",
+        "symfony/phpunit-bridge": "^4.2"
     }
 }
