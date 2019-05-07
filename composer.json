@@ -1,7 +1,7 @@
 {
     "name": "superbrave/omnipay-icepay-payments",
     "type": "library",
-    "description": "Icepay Payments support for Omnipay payment processing library.",
+    "description": "Icepay Payments support (exluding Afterpay) for Omnipay payment processing library.",
     "keywords": [
         "icepay",
         "gateway",
