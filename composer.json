@@ -29,6 +29,7 @@
     },
     "require": {
         "php": "^7.0",
+        "ext-json": "*",
         "league/omnipay": "^3.0"
     },
     "require-dev": {
