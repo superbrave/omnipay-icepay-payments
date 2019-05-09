@@ -71,6 +71,52 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * Get Contract Profile Id (also known as userId)
+     *
+     * Use the Contract Profile Id assigned by Allied wallet.
+     *
+     * @return string
+     */
+    public function getContractProfileId(): string
+    {
+        return $this->getParameter('contractProfileId');
+    }
+
+    /**
+     * Set Contract Profile Id
+     *
+     * @param string $contractProfileId id as found in backoffice
+     *
+     * @return self implements a fluent interface
+     */
+    public function setContractProfileId(string $contractProfileId): self
+    {
+        return $this->setParameter('contractProfileId', $contractProfileId);
+    }
+
+    /**
+     * Get Secret Key
+     *
+     * @return string
+     */
+    public function getSecretKey(): string
+    {
+        return $this->getParameter('secretKey');
+    }
+
+    /**
+     * Set Secret Key
+     *
+     * @param string $secretKey Merchant password as set up in backoffice
+     *
+     * @return self implements a fluent interface
+     */
+    public function setSecretKey($secretKey): self
+    {
+        return $this->setParameter('secretKey', $secretKey);
+    }
+
+    /**
      * Create an authorize request.
      * This is not an 'authorisation function' as icepay puts it, but a 'transaction function'.
      *
