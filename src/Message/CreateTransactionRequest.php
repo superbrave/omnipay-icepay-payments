@@ -49,7 +49,7 @@ class CreateTransactionRequest extends AbstractRestRequest
 
         $request = new Request(
             self::REQUEST_METHOD,
-            self::REQUEST_FUNCTION,
+            $this->getEndpoint() . self::REQUEST_FUNCTION,
             $headers
         );
 
