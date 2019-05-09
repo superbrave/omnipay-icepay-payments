@@ -35,7 +35,7 @@ class CreateTransactionRequest extends AbstractRestRequest
         // we need to do the hash here because we need to know the full url and request method
         $hash = $this->getSecurityHash(self::REQUEST_FUNCTION, self::REQUEST_METHOD, json_encode($data));
 
-        $headers = array_merge(
+        $headers = array_merge_recursive(
             [
                 'headers' => $this->requestHeaders
             ],
