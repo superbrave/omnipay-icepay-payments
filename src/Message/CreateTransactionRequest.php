@@ -2,8 +2,9 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
-use GuzzleHttp\Client;
-use Psr\Http\Client\ClientInterface;
+use GuzzleHttp\Psr7\Request;
+use \Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 /**
  * Create a payment at Icepay, using REST api
@@ -23,12 +24,11 @@ class CreateTransactionRequest extends AbstractRestRequest
     protected function runTransaction(
         ClientInterface $client,
         array $data
-    ): Psr\Http\Message\ResponseInterface {
+    ): PsrResponseInterface {
         // we need to do the hash here because we need to know the full url and request method
         $hash = $this->getSecurityHash(self::REQUEST_FUNCTION, self::REQUEST_METHOD, json_encode($data));
 
-        /** @var Client $client */
-        return $client->request(
+        $request = new Request(
             self::REQUEST_METHOD,
             $this->getEndpoint() . self::REQUEST_FUNCTION,
             [
@@ -36,8 +36,8 @@ class CreateTransactionRequest extends AbstractRestRequest
                     'CHECKSUM' => $hash,
                     'USERID' => $this->getContractProfileId()
                 ]
-            ]
-        );
+            ]);
+        return $client->sendRequest($request);
     }
 
     /**

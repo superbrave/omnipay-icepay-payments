@@ -7,6 +7,7 @@ use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 abstract class AbstractRestRequest extends AbstractRequest
 {
@@ -75,12 +76,9 @@ abstract class AbstractRestRequest extends AbstractRequest
      * @param ClientInterface $client Configured HttpClient
      * @param array           $data   All data to be sent in the transaction
      *
-     * @return ResponseInterface
+     * @return PsrResponseInterface
      */
-    abstract protected function runTransaction(
-        ClientInterface $client,
-        array $data
-    ): Psr\Http\Message\ResponseInterface;
+    abstract protected function runTransaction(ClientInterface $client, array $data): PsrResponseInterface;
 
     /**
      * Send data to the Gateway
