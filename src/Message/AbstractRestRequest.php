@@ -136,6 +136,30 @@ abstract class AbstractRestRequest extends AbstractRequest
         return base64_encode($hash);
     }
 
+    /**
+     * Get the request headers, including checksum and userid
+     *
+     * @param string $hash
+     *
+     * @return array
+     *
+     * @throws InvalidRequestException
+     */
+    protected function getHeaders(string $hash): array
+    {
+        return array_merge_recursive(
+            [
+                'headers' => $this->requestHeaders
+            ],
+            [
+                'headers' => [
+                    'CHECKSUM' => $hash,
+                    'USERID' => $this->getContractProfileId()
+                ]
+            ]
+        );
+    }
+
 
     /**
      * @return string
