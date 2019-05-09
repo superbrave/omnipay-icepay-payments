@@ -125,15 +125,34 @@ abstract class AbstractRestRequest extends AbstractRequest
      *
      * @return string
      */
-    protected function getSecurityHash(
-        string $relativeUrl,
-        string $requestMethod,
-        string $jsonRequestBody
-    ): string {
+    protected function getSecurityHash(string $relativeUrl, string $requestMethod, string $jsonRequestBody): string
+    {
         $data = $this->getEndpoint() . $relativeUrl . $requestMethod . $this->getContractProfileId() . $jsonRequestBody;
         $hash = hash_hmac('sha256', $data, base64_decode($this->getSecretKey()), true);
 
         return base64_encode($hash);
+    }
+
+    /**
+     * Get the request headers, including checksum and userid.
+     *
+     * @param string $hash
+     *
+     * @return array
+     */
+    protected function getHeaders(string $hash): array
+    {
+        return array_merge_recursive(
+            [
+                'headers' => $this->requestHeaders,
+            ],
+            [
+                'headers' => [
+                    'CHECKSUM' => $hash,
+                    'USERID' => $this->getContractProfileId(),
+                ]
+            ]
+        );
     }
 
     /**
