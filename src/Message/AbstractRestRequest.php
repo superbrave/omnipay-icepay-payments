@@ -3,10 +3,10 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
-use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 abstract class AbstractRestRequest extends AbstractRequest
@@ -46,7 +46,7 @@ abstract class AbstractRestRequest extends AbstractRequest
      *
      * @throws \Omnipay\Common\Exception\InvalidRequestException
      */
-    public function getData()
+    public function getData(): array
     {
         $this->validate('secretKey', 'amount'); // @todo
 
@@ -87,9 +87,9 @@ abstract class AbstractRestRequest extends AbstractRequest
      *
      * @return ResponseInterface
      */
-    public function sendData($data)
+    public function sendData($data): ResponseInterface
     {
-        $client = new Client(['headers' => $this->requestHeaders]);
+        $client = new Client();
 
         // Replace this line with the correct function.
         $response = $this->runTransaction($client, $data);
@@ -104,7 +104,7 @@ abstract class AbstractRestRequest extends AbstractRequest
      *
      * @return string
      */
-    public function getEndpoint()
+    public function getEndpoint(): string
     {
         return $this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint;
     }
@@ -129,7 +129,7 @@ abstract class AbstractRestRequest extends AbstractRequest
         string $relativeUrl,
         string $requestMethod,
         string $jsonRequestBody
-    ) {
+    ): string {
         $data = $this->getEndpoint() . $relativeUrl . $requestMethod . $this->getContractProfileId() . $jsonRequestBody;
         $hash = hash_hmac("sha256", $data, base64_decode($this->getSecretKey()), true);
 

@@ -2,8 +2,8 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
-use \Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 /**
@@ -13,9 +13,16 @@ class CreateTransactionRequest extends AbstractRestRequest
 {
     /**
      * Last part of the api url, which method you want to call.
+     *
+     * @var string
      */
     const REQUEST_FUNCTION = 'contract/transaction';
 
+    /**
+     * HTTP method type of request
+     *
+     * @var string
+     */
     const REQUEST_METHOD = 'POST';
 
     /**
@@ -28,22 +35,31 @@ class CreateTransactionRequest extends AbstractRestRequest
         // we need to do the hash here because we need to know the full url and request method
         $hash = $this->getSecurityHash(self::REQUEST_FUNCTION, self::REQUEST_METHOD, json_encode($data));
 
-        $request = new Request(
-            self::REQUEST_METHOD,
-            $this->getEndpoint() . self::REQUEST_FUNCTION,
+        $headers = array_merge(
+            [
+                'headers' => $this->requestHeaders
+            ],
             [
                 'headers' => [
                     'CHECKSUM' => $hash,
                     'USERID' => $this->getContractProfileId()
                 ]
-            ]);
-        return $client->sendRequest($request);
+            ]
+        );
+
+        $request = new Request(
+            self::REQUEST_METHOD,
+            $this->getEndpoint() . self::REQUEST_FUNCTION,
+            $headers
+        );
+
+        return $client->send($request);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): array
     {
         $data = parent::getData();
 
@@ -54,8 +70,9 @@ class CreateTransactionRequest extends AbstractRestRequest
         $data['Fulfillment']['Timestamp'] = date(DATE_ATOM);
         $data['Fulfillment']['LanguageCode'] = $this->getParameter('languageCode');
         $data['Fulfillment']['Reference'] = $this->getParameter('reference');
-    }
 
+        return $data;
+    }
 
     /**
      * {@inheritdoc}
@@ -64,5 +81,4 @@ class CreateTransactionRequest extends AbstractRestRequest
     {
         return CreateTransactionResponse::class;
     }
-
 }
