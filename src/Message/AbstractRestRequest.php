@@ -9,6 +9,9 @@ use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
+/**
+ * Class AbstractRestRequest.
+ */
 abstract class AbstractRestRequest extends AbstractRequest
 {
     /**
@@ -42,9 +45,24 @@ abstract class AbstractRestRequest extends AbstractRequest
     ];
 
     /**
-     * {@inheritdoc}
+     * Run the transaction by calling the service.
      *
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @param ClientInterface $client Configured HttpClient
+     * @param array           $data   All data to be sent in the transaction
+     *
+     * @return PsrResponseInterface
+     */
+    abstract protected function runTransaction(ClientInterface $client, array $data): PsrResponseInterface;
+
+    /**
+     * Get the FQDN for the response to be created
+     *
+     * @return string
+     */
+    abstract protected function getResponseName(): string;
+
+    /**
+     * {@inheritdoc}
      */
     public function getData(): array
     {
@@ -53,8 +71,8 @@ abstract class AbstractRestRequest extends AbstractRequest
         $this->requestData = [];
         $this->requestData['Contract']['ContractProfileId'] = $this->getContractProfileId();
         $this->requestData['Contract']['AmountInCents'] = $this->getAmountInteger();
-        $this->requestData['Contract']['CurrencyCode'] = $this->getCurrency();
-        $this->requestData['Contract']['Reference'] = $this->getTransactionId();
+        $this->requestData['Contract']['CurrencyCode'] = $this->getCurrencyCode();
+        $this->requestData['Contract']['Reference'] = $this->getReference();
 
         $this->requestData['Postback']['UrlCompleted'] = $this->getReturnUrl();
         $this->requestData['Postback']['UrlError'] = $this->getCancelUrl();
@@ -68,17 +86,6 @@ abstract class AbstractRestRequest extends AbstractRequest
 
         return $this->requestData;
     }
-
-
-    /**
-     * Run the transaction by calling the service.
-     *
-     * @param ClientInterface $client Configured HttpClient
-     * @param array           $data   All data to be sent in the transaction
-     *
-     * @return PsrResponseInterface
-     */
-    abstract protected function runTransaction(ClientInterface $client, array $data): PsrResponseInterface;
 
     /**
      * Send data to the Gateway
@@ -110,13 +117,6 @@ abstract class AbstractRestRequest extends AbstractRequest
     }
 
     /**
-     * Get the FQDN for the response to be created
-     *
-     * @return string
-     */
-    abstract protected function getResponseName(): string;
-
-    /**
      * Safety hash from icepay, to be generated after putting in all the data.
      *
      * @param string $relativeUrl     Relative to base url
@@ -131,11 +131,10 @@ abstract class AbstractRestRequest extends AbstractRequest
         string $jsonRequestBody
     ): string {
         $data = $this->getEndpoint() . $relativeUrl . $requestMethod . $this->getContractProfileId() . $jsonRequestBody;
-        $hash = hash_hmac("sha256", $data, base64_decode($this->getSecretKey()), true);
+        $hash = hash_hmac('sha256', $data, base64_decode($this->getSecretKey()), true);
 
         return base64_encode($hash);
     }
-
 
     /**
      * @return string
@@ -147,10 +146,13 @@ abstract class AbstractRestRequest extends AbstractRequest
         if (empty($this->getParameter('contractProfileId'))) {
             throw new InvalidRequestException('contractProfileId must be set.');
         }
+
         return $this->getParameter('contractProfileId');
     }
 
     /**
+     * Sets the contract profile id (also known as user id) for the API request.
+     *
      * @param string $contractProfileId
      *
      * @return self
@@ -170,10 +172,13 @@ abstract class AbstractRestRequest extends AbstractRequest
         if (empty($this->getParameter('secretKey'))) {
             throw new InvalidRequestException('secretKey must be set.');
         }
+
         return $this->getParameter('secretKey');
     }
 
     /**
+     * Sets the secret key for the API request.
+     *
      * @param string $secretKey
      *
      * @return self
@@ -183,4 +188,133 @@ abstract class AbstractRestRequest extends AbstractRequest
         return $this->setParameter('secretKey', $secretKey);
     }
 
+    /**
+     * @return string
+     *
+     * @throws InvalidRequestException
+     */
+    public function getCurrencyCode(): string
+    {
+        if (empty($this->getParameter('currencyCode'))) {
+            throw new InvalidRequestException('currencyCode must be set.');
+        }
+
+        return $this->getParameter('currencyCode');
+    }
+
+    /**
+     * Sets the currency code.
+     *
+     * @param string $currencyCode
+     *
+     * @return self
+     */
+    public function setCurrencyCode(string $currencyCode): self
+    {
+        return $this->setParameter('currencyCode', $currencyCode);
+    }
+
+    /**
+     * @return string
+     *
+     * @throws InvalidRequestException
+     */
+    public function getIssuerCode(): string
+    {
+        if (empty($this->getParameter('issuerCode'))) {
+            throw new InvalidRequestException('issuerCode must be set.');
+        }
+
+        return $this->getParameter('issuerCode');
+    }
+
+    /**
+     * Sets the issuerCode.
+     *
+     * @param string $issuerCode
+     *
+     * @return self
+     */
+    public function setIssuerCode(string $issuerCode): self
+    {
+        return $this->setParameter('issuerCode', $issuerCode);
+    }
+
+    /**
+     * @return string
+     *
+     * @throws InvalidRequestException
+     */
+    public function getLanguageCode(): string
+    {
+        if (empty($this->getParameter('languageCode'))) {
+            throw new InvalidRequestException('languageCode must be set.');
+        }
+
+        return $this->getParameter('languageCode');
+    }
+
+    /**
+     * Sets the language code.
+     *
+     * @param string $languageCode
+     *
+     * @return self
+     */
+    public function setLanguageCode(string $languageCode): self
+    {
+        return $this->setParameter('languageCode', $languageCode);
+    }
+
+    /**
+     * @return string
+     *
+     * @throws InvalidRequestException
+     */
+    public function getReference(): string
+    {
+        if (empty($this->getParameter('reference'))) {
+            throw new InvalidRequestException('reference must be set.');
+        }
+
+        return $this->getParameter('reference');
+    }
+
+    /**
+     * Sets the reference.
+     *
+     * @param string $reference
+     *
+     * @return self
+     */
+    public function setReference(string $reference): self
+    {
+        return $this->setParameter('reference', $reference);
+    }
+
+    /**
+     * @return string
+     *
+     * @throws InvalidRequestException
+     */
+    public function getTimestamp(): string
+    {
+        if (empty($this->getParameter('timestamp'))) {
+            throw new InvalidRequestException('timestamp must be set.');
+        }
+
+        return $this->getParameter('timestamp');
+    }
+
+    /**
+     * Sets the timestamp as string value.
+     *
+     * @param string $timestamp
+     *
+     * @return self
+     */
+    public function setTimestamp(string $timestamp): self
+    {
+        return $this->setParameter('timestamp', $timestamp);
+    }
 }

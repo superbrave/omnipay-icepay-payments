@@ -19,7 +19,7 @@ class CreateTransactionRequest extends AbstractRestRequest
     const REQUEST_FUNCTION = 'contract/transaction';
 
     /**
-     * HTTP method type of request
+     * HTTP method type of request.
      *
      * @var string
      */
@@ -28,21 +28,23 @@ class CreateTransactionRequest extends AbstractRestRequest
     /**
      * {@inheritdoc}
      */
-    protected function runTransaction(
-        ClientInterface $client,
-        array $data
-    ): PsrResponseInterface {
+    protected function runTransaction(ClientInterface $client, array $data): PsrResponseInterface
+    {
         // we need to do the hash here because we need to know the full url and request method
-        $hash = $this->getSecurityHash(self::REQUEST_FUNCTION, self::REQUEST_METHOD, json_encode($data));
+        $hash = $this->getSecurityHash(
+            $this->getEndpoint(). self::REQUEST_FUNCTION,
+            self::REQUEST_METHOD,
+            json_encode($data)
+        );
 
         $headers = array_merge_recursive(
             [
-                'headers' => $this->requestHeaders
+                'headers' => $this->requestHeaders,
             ],
             [
                 'headers' => [
                     'CHECKSUM' => $hash,
-                    'USERID' => $this->getContractProfileId()
+                    'USERID' => $this->getContractProfileId(),
                 ]
             ]
         );
@@ -63,13 +65,13 @@ class CreateTransactionRequest extends AbstractRestRequest
     {
         $data = parent::getData();
 
-        $data['Fulfillment']['PaymentMethod'] = $this->getParameter('paymentMethod');
-        $data['Fulfillment']['IssuerCode'] = $this->getParameter('issuerCode');
+        $data['Fulfillment']['PaymentMethod'] = $this->getPaymentMethod();
+        $data['Fulfillment']['IssuerCode'] = $this->getIssuerCode();
         $data['Fulfillment']['AmountInCents'] = $this->getAmountInteger();
-        $data['Fulfillment']['CurrencyCode'] = $this->getParameter('currencyCode');
-        $data['Fulfillment']['Timestamp'] = date(DATE_ATOM);
-        $data['Fulfillment']['LanguageCode'] = $this->getParameter('languageCode');
-        $data['Fulfillment']['Reference'] = $this->getParameter('reference');
+        $data['Fulfillment']['CurrencyCode'] = $this->getCurrencyCode();
+        $data['Fulfillment']['Timestamp'] = $this->getTimestamp();
+        $data['Fulfillment']['LanguageCode'] = $this->getLanguageCode();
+        $data['Fulfillment']['Reference'] = $this->getReference();
 
         return $data;
     }
