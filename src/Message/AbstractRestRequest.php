@@ -130,7 +130,7 @@ abstract class AbstractRestRequest extends AbstractRequest
         string $requestMethod,
         string $jsonRequestBody
     ): string {
-        $data = $relativeUrl . $requestMethod . $this->getContractProfileId() . $jsonRequestBody;
+        $data = $this->getEndpoint() . $relativeUrl . $requestMethod . $this->getContractProfileId() . $jsonRequestBody;
         $hash = hash_hmac("sha256", $data, base64_decode($this->getSecretKey()), true);
 
         return base64_encode($hash);
