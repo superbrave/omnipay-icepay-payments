@@ -2,52 +2,79 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
-use Omnipay\Common\Message\AbstractResponse;
-use Psr\Http\Message\ResponseInterface;
-
 /**
- * Response of creating a payment at Icepay
+ * The response after creating a transaction at Icepay.
  */
 class CreateTransactionResponse extends AbstractResponse
 {
     /**
-     * Contains decoded response. Response is a ResponseInterface instance, this contains the body as string.
-     *
-     * @var string[]
+     * @var string
      */
-    private $responseContent;
+    private const RESPONSE_STATUS_CANCELLED = 'CANCELLED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_CBACK = 'CBACK';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_COMPLETED = 'COMPLETED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_EXPIRED = 'EXPIRED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_FAILED = 'FAILED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_PENDING = 'PENDING';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_REFUND = 'REFUND';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_REJECTED = 'REJECTED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_SETTLED = 'SETTLED';
+
+    /**
+     * @var string
+     */
+    private const RESPONSE_STATUS_STARTED = 'STARTED';
 
     /**
      * {@inheritdoc}
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
-        if (!($this->data instanceof ResponseInterface)) {
-            return false;
-        }
-
-        /** @var ResponseInterface $this->data */
-        if ($this->data->getStatusCode() !== 200) {
-            return false;
-        }
-
-        $this->responseContent = json_decode($this->data->getBody(), true);
-
-        if (!empty($this->responseContent['TransactionId'])) {
-            return true;
-        }
-
-        return false;
+        return parent::isSuccessful()
+            && isset($this->data['TransactionId'])
+            && in_array($this->data['TransactionStatusCode'], array(
+                self::RESPONSE_STATUS_SETTLED,
+                self::RESPONSE_STATUS_COMPLETED
+            ));
     }
 
     /**
-     * Get a reference provided by the gateway to represent this transaction
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
-    public function getTransactionReference()
+    public function getTransactionReference(): ?string
     {
-        return $this->data->getBody();
+        return isset($this->data['TransactionId']) ?? null;
     }
-
 }

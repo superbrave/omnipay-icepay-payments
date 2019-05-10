@@ -2,50 +2,13 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Omnipay\Common\Message\ResponseInterface;
 
 /**
- * Create a payment at Icepay, using REST api
+ * The request for creating a transaction at Icepay.
  */
-class CreateTransactionRequest extends AbstractRestRequest
+class CreateTransactionRequest extends AbstractRequest
 {
-    /**
-     * Last part of the api url, which method you want to call.
-     *
-     * @var string
-     */
-    const REQUEST_FUNCTION = 'contract/transaction';
-
-    /**
-     * HTTP method type of request.
-     *
-     * @var string
-     */
-    const REQUEST_METHOD = 'POST';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function runTransaction(ClientInterface $client, array $data): PsrResponseInterface
-    {
-        // we need to do the hash here because we need to know the full url and request method
-        $hash = $this->getSecurityHash(
-            self::REQUEST_FUNCTION,
-            self::REQUEST_METHOD,
-            json_encode($data)
-        );
-
-        $request = new Request(
-            self::REQUEST_METHOD,
-            $this->getEndpoint() . self::REQUEST_FUNCTION,
-            $this->getHeaders($hash)
-        );
-
-        return $client->send($request);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -67,8 +30,17 @@ class CreateTransactionRequest extends AbstractRestRequest
     /**
      * {@inheritdoc}
      */
-    protected function getResponseName(): string
+    public function sendData($data): ResponseInterface
     {
-        return CreateTransactionResponse::class;
+        $this->sendRequest(
+            self::METHOD_POST,
+            '/contract/transaction',
+            $data
+        );
+
+        return new CreateTransactionResponse(
+            $this,
+            $this->getResponseBody()
+        );
     }
 }

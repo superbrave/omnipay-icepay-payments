@@ -28,7 +28,7 @@
         "bin-dir": "bin"
     },
     "require": {
-        "php": "^7.0",
+        "php": "^7.2.9",
         "ext-json": "*",
         "league/omnipay": "^3.0"
     },

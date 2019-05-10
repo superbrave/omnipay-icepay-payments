@@ -2,53 +2,18 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Omnipay\Common\Message\ResponseInterface;
 
 /**
- * Get status of transaction at Icepay, using REST api
+ * The request for getting the transaction status at Icepay.
  */
-class TransactionStatusRequest extends AbstractRestRequest
+class TransactionStatusRequest extends AbstractRequest
 {
     /**
-     * Last part of the api url, which method you want to call.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    const REQUEST_FUNCTION = 'transaction/';
-
-    /**
-     * HTTP method type of request
-     *
-     * @var string
-     */
-    const REQUEST_METHOD = 'GET';
-
-    /**
-     * @inheritDoc
-     */
-    protected function runTransaction(\GuzzleHttp\ClientInterface $client, array $data): PsrResponseInterface
+    public function sendData($data): ResponseInterface
     {
-        $location = self::REQUEST_FUNCTION . $this->getTransactionId();
-
-        // we need to do the hash here because we need to know the full url and request method
-        $hash = $this->getSecurityHash($location, self::REQUEST_METHOD, json_encode($data));
-
-        $request = new Request(
-            self::REQUEST_METHOD,
-            $this->getEndpoint() . $location,
-            $this->getHeaders($hash)
-        );
-
-        return $client->send($request);
+        // TODO: Implement sendData() method.
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getResponseName(): string
-    {
-        // TODO: Implement getResponseName() method.
-    }
-
 }

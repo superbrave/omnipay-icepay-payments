@@ -4,7 +4,6 @@ namespace Omnipay\IcepayPayments;
 
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
-use Omnipay\IcepayPayments\Message\AbstractRestRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\RefundRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
@@ -21,35 +20,17 @@ use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
 class Gateway extends AbstractGateway
 {
     /**
-     * Create and initialize a request object
-     *
-     * This function is usually used to create objects of type
-     * Omnipay\Common\Message\AbstractRequest (or a non-abstract subclass of it)
-     * and initialise them with using existing parameters from this gateway.
-     *
-     * @param string $class      The request class name
-     * @param array  $parameters Data to be sent to Docdata
-     *
-     * @see \Omnipay\Common\Message\AbstractRequest
-     *
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @var string
      */
-    protected function createRequest($class, array $parameters)
-    {
-        /**
-         * Recognise $obj as request
-         *
-         * @var AbstractRestRequest $obj Request class
-         */
-        $obj = new $class($this->httpClient, $this->httpRequest);
+    private const API_BASE_URL = 'https://interconnect.icepay.com/api';
 
-        return $obj->initialize(array_replace($this->getParameters(), $parameters));
-    }
+    /**
+     * @var string
+     */
+    private const TEST_API_BASE_URL = 'https://acc-interconnect.icepay.com/api';
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -58,8 +39,6 @@ class Gateway extends AbstractGateway
 
     /**
      * {@inheritdoc}
-     *
-     * @return array
      */
     public function getDefaultParameters(): array
     {
@@ -71,7 +50,46 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get Contract Profile Id (also known as userId)
+     * {@inheritdoc}
+     */
+    public function initialize(array $parameters = array()): self
+    {
+        parent::initialize($parameters);
+
+        $baseUrl = self::API_BASE_URL;
+        if ($this->getTestMode()) {
+            $baseUrl = self::TEST_API_BASE_URL;
+        }
+
+        $this->setBaseUrl($baseUrl);
+
+        return $this;
+    }
+
+    /**
+     * Returns the base URL of the API.
+     *
+     * @return string
+     */
+    public function getBaseUrl(): string
+    {
+        return $this->getParameter('baseUrl');
+    }
+
+    /**
+     * Sets the base URL of the API.
+     *
+     * @param string $baseUrl
+     *
+     * @return self
+     */
+    public function setBaseUrl(string $baseUrl): self
+    {
+        return $this->setParameter('baseUrl', $baseUrl);
+    }
+
+    /**
+     * Get Contract Profile Id (also known as the user id).
      *
      * Use the Contract Profile Id assigned by Allied wallet.
      *
@@ -83,11 +101,11 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Set Contract Profile Id
+     * Set Contract Profile Id (also known as the user id).
      *
-     * @param string $contractProfileId id as found in backoffice
+     * @param string $contractProfileId
      *
-     * @return self implements a fluent interface
+     * @return self
      */
     public function setContractProfileId(string $contractProfileId): self
     {
@@ -107,9 +125,9 @@ class Gateway extends AbstractGateway
     /**
      * Set Secret Key
      *
-     * @param string $secretKey Merchant password as set up in backoffice
+     * @param string $secretKey
      *
-     * @return self implements a fluent interface
+     * @return self
      */
     public function setSecretKey($secretKey): self
     {
@@ -189,5 +207,4 @@ class Gateway extends AbstractGateway
     {
         // @todo implement void / cancel method (out of scope)
     }
-
 }
