@@ -22,5 +22,10 @@ class TransactionStatusRequest extends AbstractRequest
             ),
             $data
         );
+
+        return new TransactionStatusResponse(
+            $this,
+            $this->getResponseBody()
+        );
     }
 }

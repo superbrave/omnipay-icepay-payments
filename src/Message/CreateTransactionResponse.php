@@ -8,62 +8,12 @@ namespace Omnipay\IcepayPayments\Message;
 class CreateTransactionResponse extends AbstractResponse
 {
     /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_CANCELLED = 'CANCELLED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_CBACK = 'CBACK';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_COMPLETED = 'COMPLETED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_EXPIRED = 'EXPIRED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_FAILED = 'FAILED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_PENDING = 'PENDING';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_REFUND = 'REFUND';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_REJECTED = 'REJECTED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_SETTLED = 'SETTLED';
-
-    /**
-     * @var string
-     */
-    private const RESPONSE_STATUS_STARTED = 'STARTED';
-
-    /**
      * {@inheritdoc}
      */
     public function isSuccessful(): bool
     {
         return parent::isSuccessful()
-            && isset($this->data['transactionId'])
+            && ($this->getTransactionReference() !== null)
             && in_array($this->data['transactionStatusCode'], array(
                 self::RESPONSE_STATUS_STARTED,
             ));
@@ -83,13 +33,5 @@ class CreateTransactionResponse extends AbstractResponse
     public function getRedirectUrl(): string
     {
         return $this->data['acquirerRequestUri'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTransactionReference(): ?string
-    {
-        return $this->data['transactionId'] ?? null;
     }
 }

@@ -12,6 +12,18 @@ class TransactionStatusResponse extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
-        // TODO: Implement isSuccessful() method.
+        return parent::isSuccessful()
+            && in_array($this->data['transactionStatusCode'], array(
+                self::RESPONSE_STATUS_COMPLETED,
+                self::RESPONSE_STATUS_SETTLED,
+            ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCancelled(): bool
+    {
+        return $this->data['transactionStatusCode'] === self::RESPONSE_STATUS_CANCELLED;
     }
 }
