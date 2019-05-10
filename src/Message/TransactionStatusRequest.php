@@ -14,6 +14,13 @@ class TransactionStatusRequest extends AbstractRequest
      */
     public function sendData($data): ResponseInterface
     {
-        // TODO: Implement sendData() method.
+        $this->sendRequest(
+            self::METHOD_POST,
+            sprintf(
+                '/transaction/%s',
+                $this->getTransactionReference()
+            ),
+            $data
+        );
     }
 }
