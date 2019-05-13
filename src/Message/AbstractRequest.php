@@ -20,25 +20,9 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     public function getData(): array
     {
-        $this->validate('secretKey', 'amount'); // @todo
+        $this->validate('contractProfileId', 'secretKey'); // @todo add more keys to validate.
 
-        $data = [];
-        $data['Contract']['ContractProfileId'] = $this->getContractProfileId();
-        $data['Contract']['AmountInCents'] = $this->getAmountInteger();
-        $data['Contract']['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Contract']['Reference'] = $this->getReference();
-
-        $data['Postback']['UrlCompleted'] = $this->getReturnUrl();
-        $data['Postback']['UrlError'] = $this->getCancelUrl();
-        $data['Postback']['UrlsNotify'] = [$this->getNotifyUrl()]; // array
-
-        $data['IntegratorFootprint']['IPAddress'] = '127.0.0.1';
-        $data['IntegratorFootprint']['TimeStampUTC'] = '0';
-
-        $data['ConsumerFootprint']['IPAddress'] = '127.0.0.1';
-        $data['ConsumerFootprint']['TimeStampUTC'] = '0';
-
-        return $data;
+        return array();
     }
 
     /**
