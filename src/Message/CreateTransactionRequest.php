@@ -2,6 +2,8 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
+use DateTime;
+use DateTimeZone;
 use Omnipay\Common\Message\ResponseInterface;
 
 /**
@@ -14,6 +16,9 @@ class CreateTransactionRequest extends AbstractRequest
      */
     public function getData(): array
     {
+        $dateTime = new DateTime();
+        $dateTime->setTimezone(new DateTimeZone('UTC'));
+
         $data = parent::getData();
 
         $data['Contract']['ContractProfileId'] = $this->getContractProfileId();
@@ -35,7 +40,7 @@ class CreateTransactionRequest extends AbstractRequest
         $data['Fulfillment']['IssuerCode'] = $this->getIssuerCode();
         $data['Fulfillment']['AmountInCents'] = $this->getAmountInteger();
         $data['Fulfillment']['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Fulfillment']['Timestamp'] = $this->getTimestamp();
+        $data['Fulfillment']['Timestamp'] = $dateTime->format('Y-m-d\TH:i:s\Z');
         $data['Fulfillment']['LanguageCode'] = $this->getLanguageCode();
         $data['Fulfillment']['CountryCode'] = $this->getCountryCode();
         $data['Fulfillment']['Reference'] = $this->getReference();

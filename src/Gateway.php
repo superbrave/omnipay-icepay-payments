@@ -125,7 +125,7 @@ class Gateway extends AbstractGateway
      */
     public function capture(array $parameters = []): RequestInterface
     {
-        // @todo implement capture method (out of scope)
+        return $this->fetchTransaction($parameters);
     }
 
     /**

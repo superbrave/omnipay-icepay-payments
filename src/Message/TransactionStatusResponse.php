@@ -26,4 +26,12 @@ class TransactionStatusResponse extends AbstractResponse
     {
         return $this->data['statusCode'] === self::RESPONSE_STATUS_CANCELLED;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTransactionReference(): ?string
+    {
+        return $this->request->getTransactionReference();
+    }
 }
