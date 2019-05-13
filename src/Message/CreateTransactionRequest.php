@@ -37,6 +37,7 @@ class CreateTransactionRequest extends AbstractRequest
         $data['Fulfillment']['CurrencyCode'] = $this->getCurrencyCode();
         $data['Fulfillment']['Timestamp'] = $this->getTimestamp();
         $data['Fulfillment']['LanguageCode'] = $this->getLanguageCode();
+        $data['Fulfillment']['CountryCode'] = $this->getCountryCode();
         $data['Fulfillment']['Reference'] = $this->getReference();
 
         return $data;

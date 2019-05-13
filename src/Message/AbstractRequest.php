@@ -178,6 +178,8 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
+     * Get the currency code.
+     *
      * @return string
      */
     public function getCurrencyCode(): string
@@ -195,6 +197,28 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     public function setCurrencyCode(string $currencyCode): self
     {
         return $this->setParameter('currencyCode', $currencyCode);
+    }
+
+    /**
+     * Get the country code.
+     *
+     * @return string
+     */
+    public function getCountryCode(): string
+    {
+        return $this->getParameter('countryCode');
+    }
+
+    /**
+     * Sets the country code.
+     *
+     * @param string $countryCode
+     *
+     * @return self
+     */
+    public function setCountryCode(string $countryCode): self
+    {
+        return $this->setParameter('countryCode', $countryCode);
     }
 
     /**

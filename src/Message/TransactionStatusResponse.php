@@ -13,7 +13,7 @@ class TransactionStatusResponse extends AbstractResponse
     public function isSuccessful(): bool
     {
         return parent::isSuccessful()
-            && in_array($this->data['transactionStatusCode'], array(
+            && in_array($this->data['statusCode'], array(
                 self::RESPONSE_STATUS_COMPLETED,
                 self::RESPONSE_STATUS_SETTLED,
             ));
@@ -24,6 +24,6 @@ class TransactionStatusResponse extends AbstractResponse
      */
     public function isCancelled(): bool
     {
-        return $this->data['transactionStatusCode'] === self::RESPONSE_STATUS_CANCELLED;
+        return $this->data['statusCode'] === self::RESPONSE_STATUS_CANCELLED;
     }
 }
