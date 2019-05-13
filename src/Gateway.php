@@ -67,74 +67,6 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Returns the base URL of the API.
-     *
-     * @return string
-     */
-    public function getBaseUrl(): string
-    {
-        return $this->getParameter('baseUrl');
-    }
-
-    /**
-     * Sets the base URL of the API.
-     *
-     * @param string $baseUrl
-     *
-     * @return self
-     */
-    public function setBaseUrl(string $baseUrl): self
-    {
-        return $this->setParameter('baseUrl', $baseUrl);
-    }
-
-    /**
-     * Get Contract Profile Id (also known as the user id).
-     *
-     * Use the Contract Profile Id assigned by Allied wallet.
-     *
-     * @return string
-     */
-    public function getContractProfileId(): string
-    {
-        return $this->getParameter('contractProfileId');
-    }
-
-    /**
-     * Set Contract Profile Id (also known as the user id).
-     *
-     * @param string $contractProfileId
-     *
-     * @return self
-     */
-    public function setContractProfileId(string $contractProfileId): self
-    {
-        return $this->setParameter('contractProfileId', $contractProfileId);
-    }
-
-    /**
-     * Get Secret Key
-     *
-     * @return string
-     */
-    public function getSecretKey(): string
-    {
-        return $this->getParameter('secretKey');
-    }
-
-    /**
-     * Set Secret Key
-     *
-     * @param string $secretKey
-     *
-     * @return self
-     */
-    public function setSecretKey($secretKey): self
-    {
-        return $this->setParameter('secretKey', $secretKey);
-    }
-
-    /**
      * Create an authorize request.
      * This is not an 'authorisation function' as icepay puts it, but a 'transaction function'.
      *
@@ -206,5 +138,73 @@ class Gateway extends AbstractGateway
     public function void(array $parameters = []): RequestInterface
     {
         // @todo implement void / cancel method (out of scope)
+    }
+
+    /**
+     * Returns the base URL of the API.
+     *
+     * @return string
+     */
+    public function getBaseUrl(): string
+    {
+        return $this->getParameter('baseUrl');
+    }
+
+    /**
+     * Sets the base URL of the API.
+     *
+     * @param string $baseUrl
+     *
+     * @return self
+     */
+    public function setBaseUrl(string $baseUrl): self
+    {
+        return $this->setParameter('baseUrl', $baseUrl);
+    }
+
+    /**
+     * Get Contract Profile Id (also known as the user id).
+     *
+     * Use the Contract Profile Id assigned by Allied wallet.
+     *
+     * @return string
+     */
+    public function getContractProfileId(): string
+    {
+        return $this->getParameter('contractProfileId');
+    }
+
+    /**
+     * Set Contract Profile Id (also known as the user id).
+     *
+     * @param string $contractProfileId
+     *
+     * @return self
+     */
+    public function setContractProfileId(string $contractProfileId): self
+    {
+        return $this->setParameter('contractProfileId', $contractProfileId);
+    }
+
+    /**
+     * Get Secret Key
+     *
+     * @return string
+     */
+    public function getSecretKey(): string
+    {
+        return $this->getParameter('secretKey');
+    }
+
+    /**
+     * Set Secret Key
+     *
+     * @param string $secretKey
+     *
+     * @return self
+     */
+    public function setSecretKey($secretKey): self
+    {
+        return $this->setParameter('secretKey', $secretKey);
     }
 }

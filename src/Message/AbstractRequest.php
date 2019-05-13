@@ -26,6 +26,90 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
+     * Send the request to the API of the Payment Service Provider.
+     * The base url and the authentication headers are automatically added.
+     *
+     * @param string $method
+     * @param string $urlPath
+     * @param array  $data
+     *
+     * @return ResponseInterface
+     */
+    protected function sendRequest(string $method, string $urlPath, array $data): ResponseInterface
+    {
+        $securityHash = $this->getSecurityHash($method, $urlPath, $data);
+        $headers = $this->getAuthenticationHeaders($securityHash);
+        $body = null;
+
+        if ($method === self::METHOD_POST) {
+            $headers['Content-Type'] = 'application/json';
+            $body = json_encode($data);
+        }
+
+        $this->response = $this->httpClient->request(
+            $method,
+            $this->getBaseUrl() . $urlPath,
+            $headers,
+            $body
+        );
+
+        return $this->response;
+    }
+
+    /**
+     * Returns the JSON decoded response body.
+     *
+     * @return array
+     */
+    protected function getResponseBody(): array
+    {
+        $responseBody = json_decode($this->getResponse()->getBody()->getContents(), true);
+        if (is_array($responseBody) === false) {
+            $responseBody = array();
+        }
+
+        return $responseBody;
+    }
+
+    /**
+     * Safety hash from icepay, to be generated after putting in all the data.
+     *
+     * @param string $requestMethod
+     * @param string $urlPath
+     * @param array  $data
+     *
+     * @return string
+     */
+    private function getSecurityHash(string $requestMethod, string $urlPath, array $data): string
+    {
+        $string = $this->getBaseUrl() . $urlPath . $requestMethod . $this->getContractProfileId() . json_encode($data);
+
+        $hash = hash_hmac(
+            'sha256',
+            $string,
+            base64_decode($this->getSecretKey()),
+            true
+        );
+
+        return base64_encode($hash);
+    }
+
+    /**
+     * Get the authentication headers information.
+     *
+     * @param string $securityHash
+     *
+     * @return array
+     */
+    private function getAuthenticationHeaders(string $securityHash): array
+    {
+        return array(
+            'CHECKSUM' => $securityHash,
+            'USERID' => $this->getContractProfileId(),
+        );
+    }
+
+    /**
      * Returns the base URL of the API.
      *
      * @return string
@@ -197,89 +281,5 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     public function setTimestamp(string $timestamp): self
     {
         return $this->setParameter('timestamp', $timestamp);
-    }
-
-    /**
-     * Send the request to the API of the Payment Service Provider.
-     * The base url and the authentication headers are automatically added.
-     *
-     * @param string $method
-     * @param string $urlPath
-     * @param array  $data
-     *
-     * @return ResponseInterface
-     */
-    protected function sendRequest(string $method, string $urlPath, array $data): ResponseInterface
-    {
-        $securityHash = $this->getSecurityHash($method, $urlPath, $data);
-        $headers = $this->getAuthenticationHeaders($securityHash);
-        $body = null;
-
-        if ($method === self::METHOD_POST) {
-            $headers['Content-Type'] = 'application/json';
-            $body = json_encode($data);
-        }
-
-        $this->response = $this->httpClient->request(
-            $method,
-            $this->getBaseUrl() . $urlPath,
-            $headers,
-            $body
-        );
-
-        return $this->response;
-    }
-
-    /**
-     * Returns the JSON decoded response body.
-     *
-     * @return array
-     */
-    protected function getResponseBody(): array
-    {
-        $responseBody = json_decode($this->getResponse()->getBody()->getContents(), true);
-        if (is_array($responseBody) === false) {
-            $responseBody = array();
-        }
-
-        return $responseBody;
-    }
-
-    /**
-     * Safety hash from icepay, to be generated after putting in all the data.
-     *
-     * @param string $requestMethod
-     * @param string $urlPath
-     * @param array  $data
-     *
-     * @return string
-     */
-    private function getSecurityHash(string $requestMethod, string $urlPath, array $data): string
-    {
-        $string = $this->getBaseUrl() . $urlPath . $requestMethod . $this->getContractProfileId() . json_encode($data);
-
-        $hash = hash_hmac(
-            'sha256',
-            $string,
-            base64_decode($this->getSecretKey()),
-            true
-        );
-
-        return base64_encode($hash);
-    }
-
-    /**
-     * Get the authentication headers information.
-     *
-     * @param string $securityHash
-     *
-     * @return array
-     */
-    private function getAuthenticationHeaders(string $securityHash): array
-    {
-        return array(
-            'CHECKSUM' => $securityHash,
-            'USERID' => $this->getContractProfileId(),
-        );
     }
 }
