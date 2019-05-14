@@ -10,10 +10,41 @@ use Omnipay\Common\Message\ResponseInterface;
 class RefundRequest extends AbstractRequest
 {
     /**
+     * @inheritDoc
+     */
+    public function getData(): array
+    {
+        $data = parent::getData();
+
+        $dateTime = new \DateTime();
+        $dateTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $data['ContractProfileId'] = $this->getContractProfileId();
+        $data['AmountInCents'] = $this->getAmountInteger();
+        $data['CurrencyCode'] = $this->getCurrencyCode();
+        $data['Reference'] = $this->getReference(); // This isn't the payment reference but needs to be unique among refunds.
+        $data['Timestamp'] = $dateTime->format('Y-m-d\TH:i:s\Z');
+
+        return $data;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function sendData($data): ResponseInterface
     {
-        // TODO: Implement sendData() method.
+        $this->sendRequest(
+            self::METHOD_POST,
+            sprintf(
+                '/transaction/%s/refund',
+                $this->getTransactionReference()
+            ),
+            $data
+        );
+
+        return new CreateTransactionResponse(
+            $this,
+            $this->getResponseBody()
+        );
     }
 }
