@@ -9,7 +9,7 @@ use Omnipay\IcepayPayments\Message\RefundRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
 
 /**
- * Class Gateway
+ * Class Gateway.
  *
  * @method RequestInterface completePurchase(array $options = array())
  * @method RequestInterface createCard(array $options = array())
@@ -105,7 +105,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Refund transaction
+     * Refund transaction.
      *
      * @param array $parameters Data to be sent to icepay
      *
@@ -117,7 +117,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Create a capture request
+     * Create a capture request.
      *
      * @param array $parameters Data to be sent to Icepay
      *
@@ -129,7 +129,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Create a void / cancel request
+     * Create a void / cancel request.
      *
      * @param array $parameters Data to be sent to Icepay
      *
@@ -187,7 +187,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Get Secret Key
+     * Get Secret Key.
      *
      * @return string
      */
@@ -197,7 +197,7 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * Set Secret Key
+     * Set Secret Key.
      *
      * @param string $secretKey
      *

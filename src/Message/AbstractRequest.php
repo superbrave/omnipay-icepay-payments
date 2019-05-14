@@ -48,7 +48,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
 
         $this->response = $this->httpClient->request(
             $method,
-            $this->getBaseUrl() . $urlPath,
+            $this->getBaseUrl().$urlPath,
             $headers,
             $body
         );
@@ -82,7 +82,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     private function getSecurityHash(string $requestMethod, string $urlPath, array $data): string
     {
-        $string = $this->getBaseUrl() . $urlPath . $requestMethod . $this->getContractProfileId() . json_encode($data);
+        $string = $this->getBaseUrl().$urlPath.$requestMethod.$this->getContractProfileId().json_encode($data);
 
         $hash = hash_hmac(
             'sha256',
@@ -156,7 +156,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Get Secret Key
+     * Get Secret Key.
      *
      * @return string
      */
@@ -166,7 +166,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Set Secret Key
+     * Set Secret Key.
      *
      * @param string $secretKey
      *
