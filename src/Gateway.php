@@ -9,13 +9,19 @@ use Omnipay\IcepayPayments\Message\RefundRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
 
 /**
- * Class Gateway.
+ * Icepay gateway for Omnipay.
  *
- * @method RequestInterface completePurchase(array $options = array())
- * @method RequestInterface createCard(array $options = array())
- * @method RequestInterface updateCard(array $options = array())
- * @method RequestInterface deleteCard(array $options = array())
- * @method RequestInterface purchase(array $options = array())
+ * ### Settings
+ * - contractProfileId (required): A string provided by Icepay.
+ * - secretKey         (required): A string provided by Icepay.
+ * - testMode          (optional): Changes the API to the test API. By default false.
+ *
+ * ### Workflow
+ * 1. The authorize() method initializes a new payment and returns with a purchase url.
+ * 2. The customer gets redirected to the provided purchase URL to pay with iDEAL or Bancontact.
+ * 3. Validate payment by doing a status check.
+ *
+ * Class Gateway.
  */
 class Gateway extends AbstractGateway
 {
@@ -126,18 +132,6 @@ class Gateway extends AbstractGateway
     public function capture(array $parameters = []): RequestInterface
     {
         return $this->fetchTransaction($parameters);
-    }
-
-    /**
-     * Create a void / cancel request.
-     *
-     * @param array $parameters Data to be sent to Icepay
-     *
-     * @return RequestInterface
-     */
-    public function void(array $parameters = []): RequestInterface
-    {
-        // @todo implement void / cancel method (out of scope)
     }
 
     /**
