@@ -25,3 +25,6 @@
 /vendor/
 /bin/*
 /coverage/
+
+# PHP Codesniffer
+.php_cs.cache
