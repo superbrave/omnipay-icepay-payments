@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Omnipay\IcepayPayments;
+namespace Omnipay\IcepayPayments;
 
-use Omnipay\IcepayPayments\Gateway;
+use Omnipay\Common\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,9 +11,9 @@ use PHPUnit\Framework\TestCase;
 class GatewayTest extends TestCase
 {
     /**
-     * @var Gateway
+     * @var GatewayInterface
      */
-    private $gateway;
+    public $gateway;
 
     /**
      * Creates a new Gateway instance for testing.
@@ -62,7 +62,7 @@ class GatewayTest extends TestCase
      *
      * @return array
      */
-    private function provideInitializeBaseUrlCases(): array
+    public function provideInitializeBaseUrlCases(): array
     {
         return array(
             array(
@@ -83,7 +83,7 @@ class GatewayTest extends TestCase
      *
      * @return string
      */
-    private function camelCase($string): string
+    public function camelCase($string): string
     {
         return preg_replace_callback(
             '/_([a-z])/',

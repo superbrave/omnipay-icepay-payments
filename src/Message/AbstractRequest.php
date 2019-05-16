@@ -2,6 +2,7 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
+use DateTimeInterface;
 use Omnipay\Common\Message\AbstractRequest as OmnipayAbstractRequest;
 use Psr\Http\Message\ResponseInterface;
 
@@ -13,14 +14,19 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * @var string
      */
-    public const METHOD_POST = 'POST';
+    protected const METHOD_POST = 'POST';
+
+    /**
+     * @var string
+     */
+    protected const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * {@inheritdoc}
      */
     public function getData(): array
     {
-        $this->validate('contractProfileId', 'secretKey'); // @todo add more keys to validate.
+        $this->validate('contractProfileId', 'secretKey', 'timestamp'); // @todo add more keys to validate.
 
         return array();
     }
@@ -288,9 +294,9 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * Get the timestamp.
      *
-     * @return string
+     * @return DateTimeInterface
      */
-    public function getTimestamp(): string
+    public function getTimestamp(): DateTimeInterface
     {
         return $this->getParameter('timestamp');
     }
@@ -298,11 +304,11 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * Sets the timestamp as string value.
      *
-     * @param string $timestamp
+     * @param DateTimeInterface $timestamp
      *
      * @return self
      */
-    public function setTimestamp(string $timestamp): self
+    public function setTimestamp(DateTimeInterface $timestamp): self
     {
         return $this->setParameter('timestamp', $timestamp);
     }

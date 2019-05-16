@@ -16,14 +16,11 @@ class RefundRequest extends AbstractRequest
     {
         $data = parent::getData();
 
-        $dateTime = new \DateTime();
-        $dateTime->setTimezone(new \DateTimeZone('UTC'));
-
         $data['ContractProfileId'] = $this->getContractProfileId();
         $data['AmountInCents'] = $this->getAmountInteger();
         $data['CurrencyCode'] = $this->getCurrencyCode();
         $data['Reference'] = $this->getReference(); // This isn't the payment reference but needs to be unique among refunds.
-        $data['Timestamp'] = $dateTime->format('Y-m-d\TH:i:s\Z');
+        $data['Timestamp'] = $this->getTimestamp()->format(self::TIMESTAMP_FORMAT);
 
         return $data;
     }
