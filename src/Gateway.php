@@ -28,12 +28,12 @@ class Gateway extends AbstractGateway
     /**
      * @var string
      */
-    private const API_BASE_URL = 'https://interconnect.icepay.com/api';
+    public const API_BASE_URL = 'https://interconnect.icepay.com/api';
 
     /**
      * @var string
      */
-    private const TEST_API_BASE_URL = 'https://acc-interconnect.icepay.com/api';
+    public const TEST_API_BASE_URL = 'https://acc-interconnect.icepay.com/api';
 
     /**
      * {@inheritdoc}
@@ -95,7 +95,7 @@ class Gateway extends AbstractGateway
      */
     public function completeAuthorize(array $parameters = []): RequestInterface
     {
-        return $this->createRequest(TransactionStatusRequest::class, $parameters);
+        return $this->fetchTransaction($parameters);
     }
 
     /**

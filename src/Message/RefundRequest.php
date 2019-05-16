@@ -10,7 +10,7 @@ use Omnipay\Common\Message\ResponseInterface;
 class RefundRequest extends AbstractRequest
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getData(): array
     {

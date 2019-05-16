@@ -28,3 +28,6 @@
 
 # PHP Codesniffer
 .php_cs.cache
+
+# PHPUnit
+.phpunit.result.cache
