@@ -14,33 +14,43 @@ class CreateTransactionRequest extends AbstractRequest
      */
     public function getData(): array
     {
-        $data = parent::getData();
+        $parentData = parent::getData();
 
-        $data['Contract']['ContractProfileId'] = $this->getContractProfileId();
-        $data['Contract']['AmountInCents'] = $this->getAmountInteger();
-        $data['Contract']['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Contract']['Reference'] = $this->getReference();
+        $data = [
+            'Contract' => [
+                'ContractProfileId' => $this->getContractProfileId(),
+                'AmountInCents' => $this->getAmountInteger(),
+                'CurrencyCode' => $this->getCurrencyCode(),
+                'Reference' => $this->getReference(),
+            ],
+            'Postback' => [
+                'UrlCompleted' => $this->getReturnUrl(),
+                'UrlError' => $this->getCancelUrl(),
+                'UrlsNotify' => [
+                    $this->getNotifyUrl(),
+                ],
+            ],
+            'IntegratorFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
+            'ConsumerFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
+            'Fulfillment' => [
+                'PaymentMethod' => $this->getPaymentMethod(),
+                'IssuerCode' => $this->getIssuerCode(),
+                'AmountInCents' => $this->getAmountInteger(),
+                'CurrencyCode' => $this->getCurrencyCode(),
+                'Timestamp' => $this->getTimestamp()->format(self::TIMESTAMP_FORMAT),
+                'LanguageCode' => $this->getLanguageCode(),
+                'CountryCode' => $this->getCountryCode(),
+                'Reference' => $this->getReference(),
+            ],
+        ];
 
-        $data['Postback']['UrlCompleted'] = $this->getReturnUrl();
-        $data['Postback']['UrlError'] = $this->getCancelUrl();
-        $data['Postback']['UrlsNotify'] = [$this->getNotifyUrl()]; // array
-
-        $data['IntegratorFootprint']['IPAddress'] = '127.0.0.1';
-        $data['IntegratorFootprint']['TimeStampUTC'] = '0';
-
-        $data['ConsumerFootprint']['IPAddress'] = '127.0.0.1';
-        $data['ConsumerFootprint']['TimeStampUTC'] = '0';
-
-        $data['Fulfillment']['PaymentMethod'] = $this->getPaymentMethod();
-        $data['Fulfillment']['IssuerCode'] = $this->getIssuerCode();
-        $data['Fulfillment']['AmountInCents'] = $this->getAmountInteger();
-        $data['Fulfillment']['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Fulfillment']['Timestamp'] = $this->getTimestamp()->format(self::TIMESTAMP_FORMAT);
-        $data['Fulfillment']['LanguageCode'] = $this->getLanguageCode();
-        $data['Fulfillment']['CountryCode'] = $this->getCountryCode();
-        $data['Fulfillment']['Reference'] = $this->getReference();
-
-        return $data;
+        return array_merge($parentData, $data);
     }
 
     /**
