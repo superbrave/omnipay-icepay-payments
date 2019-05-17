@@ -14,12 +14,12 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * @var string
      */
-    protected const METHOD_POST = 'POST';
+    public const METHOD_POST = 'POST';
 
     /**
      * @var string
      */
-    protected const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s\Z';
+    public const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * {@inheritdoc}
