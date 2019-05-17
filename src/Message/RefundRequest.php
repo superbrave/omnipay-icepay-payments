@@ -2,6 +2,7 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
 
 /**
@@ -27,9 +28,15 @@ class RefundRequest extends AbstractRequest
 
     /**
      * {@inheritdoc}
+     *
+     * @throws InvalidRequestException When transaction reference is not set.
      */
     public function sendData($data): ResponseInterface
     {
+        if (empty($this->getTransactionReference())) {
+            throw new InvalidRequestException('Transaction reference missing for refund request.');
+        }
+
         $this->sendRequest(
             self::METHOD_POST,
             sprintf(
