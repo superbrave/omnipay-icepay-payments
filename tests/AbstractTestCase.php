@@ -2,7 +2,7 @@
 
 namespace Omnipay\IcepayPayments;
 
-use Http\Mock\Client as MockClient;
+use Http\Mock\Client as ClientMock;
 use Omnipay\Common\Http\Client;
 use Omnipay\Common\Http\ClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractTestCase extends TestCase
 {
     /**
-     * @var MockClient
+     * @var ClientMock
      */
-    protected $mockClient;
+    protected $clientMock;
 
     /**
      * @var ClientInterface
@@ -33,8 +33,8 @@ abstract class AbstractTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        $this->mockClient = new MockClient();
-        $this->httpClient = new Client($this->mockClient);
+        $this->clientMock = new ClientMock();
+        $this->httpClient = new Client($this->clientMock);
         $this->httpRequest = new Request();
     }
 }
