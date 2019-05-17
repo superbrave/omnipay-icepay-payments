@@ -26,7 +26,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     public function getData(): array
     {
-        $this->validate('contractProfileId', 'secretKey', 'timestamp'); // @todo add more keys to validate.
+        $this->validate('contractProfileId', 'secretKey', 'timestamp', 'currencyCode');
 
         return array();
     }
