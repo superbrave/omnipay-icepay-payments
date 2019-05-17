@@ -3,9 +3,8 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use DateTime;
-use DateTimeZone;
+use GuzzleHttp\Psr7\Request;
 use Omnipay\IcepayPayments\AbstractTestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CreateTransactionRequestTest.
@@ -28,13 +27,10 @@ class CreateTransactionRequestTest extends AbstractTestCase
         $this->request->setBaseUrl('https://www.superbrave.nl');
         $this->request->setSecretKey('NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4');
         $this->request->setContractProfileId('64eb3717-8b5d-4088-8108-93224675e538');
-
-        $this->dateTime = new DateTime();
-        $this->dateTime->setTimezone(new DateTimeZone('UTC'));
     }
 
     /**
-     * Tests if AbstractRequest::getData validates the basic keys and returns an array.
+     * Tests if CreateTransactionRequest::getData validates the basic keys and returns an array of data.
      */
     public function testGetData(): void
     {
@@ -88,7 +84,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
     }
 
     /**
-     * Tests if AbstractRequest::sendData returns a CreateTransactionResponse.
+     * Tests if CreateTransactionRequest::sendData returns a CreateTransactionResponse.
      */
     public function testSendData(): void
     {
@@ -128,5 +124,13 @@ class CreateTransactionRequestTest extends AbstractTestCase
         $response = $this->request->sendData($data);
 
         $this->assertInstanceOf(CreateTransactionResponse::class, $response);
+
+        $expectedRequest = new Request(
+            AbstractRequest::METHOD_POST,
+            'https://www.superbrave.nl/contract/transaction'
+        );
+
+        $this->assertEquals($expectedRequest->getMethod(), $this->clientMock->getLastRequest()->getMethod());
+        $this->assertEquals($expectedRequest->getUri(), $this->clientMock->getLastRequest()->getUri());
     }
 }

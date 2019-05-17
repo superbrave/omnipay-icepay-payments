@@ -3,9 +3,7 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
 use Omnipay\Common\Http\Client;
-use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\IcepayPayments\AbstractTestCase;
 
 class RefundRequestTest extends AbstractTestCase
@@ -16,7 +14,7 @@ class RefundRequestTest extends AbstractTestCase
     private $request;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -34,7 +32,7 @@ class RefundRequestTest extends AbstractTestCase
     }
 
     /**
-     * Test a valid request for a refund
+     * Test a valid request for a refund.
      */
     public function testRefundGetDataWithValidValues()
     {
@@ -54,7 +52,7 @@ class RefundRequestTest extends AbstractTestCase
     }
 
     /**
-     * Test actually sending the data to the client
+     * Test actually sending the data to the client.
      */
     public function testSendData()
     {
@@ -71,5 +69,4 @@ class RefundRequestTest extends AbstractTestCase
         $this->assertEquals($expectedRequest->getMethod(), $this->clientMock->getLastRequest()->getMethod());
         $this->assertEquals($expectedRequest->getUri(), $this->clientMock->getLastRequest()->getUri());
     }
-
 }
