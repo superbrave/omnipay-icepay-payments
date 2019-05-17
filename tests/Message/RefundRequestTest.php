@@ -64,7 +64,7 @@ class RefundRequestTest extends AbstractTestCase
         $this->assertInstanceOf(RefundResponse::class, $response);
 
         $expectedRequest = new Request(
-            'POST',
+            AbstractRequest::METHOD_POST,
             'https://www.superbrave.nl/transaction/1M-MR-M33533K5-L00K-47-M3/refund'
         );
 
