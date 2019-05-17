@@ -32,21 +32,21 @@ class CreateTransactionResponseTest extends AbstractTestCase
         $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionSuccess.json');
         $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
 
-        $expectedResponseBody = array(
+        $expectedResponseBody = [
             'contractId' => 'NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4',
             'transactionId' => '64eb3717-8b5d-4088-8108-93224675e538',
             'transactionStatusCode' => AbstractResponse::RESPONSE_STATUS_STARTED,
             'transactionStatusDetails' => '',
             'acquirerRequestUri' => 'https://www.superbrave.nl/redirect-url',
             'acquirerTransactionId' => '',
-        );
+        ];
 
         $this->assertTrue($response->isSuccessful());
         $this->assertSame($expectedResponseBody, $response->getData());
     }
 
     /**
-     * Tests if CreateTransactionResponse::isSuccessful will return true from the json response.
+     * Tests if CreateTransactionResponse::isSuccessful will return false from the json response.
      */
     public function testIfResponseReturnNotSuccessful(): void
     {
