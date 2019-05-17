@@ -3,6 +3,7 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use GuzzleHttp\Psr7\Request;
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Http\Client;
 use Omnipay\IcepayPayments\AbstractTestCase;
 
@@ -34,7 +35,7 @@ class RefundRequestTest extends AbstractTestCase
     /**
      * Test a valid request for a refund.
      */
-    public function testRefundGetDataWithValidValues()
+    public function testRefundGetDataWithValidValues(): void
     {
         $expected = [
             'ContractProfileId' => '1-4M-4-B1G-B1G-G1RL',
@@ -54,7 +55,7 @@ class RefundRequestTest extends AbstractTestCase
     /**
      * Test actually sending the data to the client.
      */
-    public function testSendData()
+    public function testRefundSendDataWithValidRequest(): void
     {
         $this->request->setTransactionReference('1M-MR-M33533K5-L00K-47-M3');
         $response = $this->request->sendData($this->request->getData());
@@ -68,5 +69,16 @@ class RefundRequestTest extends AbstractTestCase
 
         $this->assertEquals($expectedRequest->getMethod(), $this->clientMock->getLastRequest()->getMethod());
         $this->assertEquals($expectedRequest->getUri(), $this->clientMock->getLastRequest()->getUri());
+    }
+
+    /**
+     * Test actually sending the data to the client.
+     */
+    public function testRefundSendDataWithMissingReference(): void
+    {
+        $this->expectException(InvalidRequestException::class);
+
+        $this->request->setTransactionReference('');
+        $this->request->sendData($this->request->getData());
     }
 }
