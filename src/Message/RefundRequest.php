@@ -39,7 +39,7 @@ class RefundRequest extends AbstractRequest
             $data
         );
 
-        return new CreateTransactionResponse(
+        return new RefundResponse(
             $this,
             $this->getResponseBody()
         );
