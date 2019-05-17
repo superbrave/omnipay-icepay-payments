@@ -6,7 +6,7 @@
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
 processing library for PHP 7.2.9+. This package implements Icepay Payments support for Omnipay and it supports ICEX2.0. Therefore you need a `SecretKey` and a `ContractProfileId` (also known as `UserId`).
 
-*Do not that this implementation does not support Authorise-Capture (for Afterpay) yet.*
+*Do note that this implementation does not support Authorise-Capture (for Afterpay) yet.*
 
 ## Installation
 
@@ -90,7 +90,7 @@ This will return the order details as well as the checkout HTML snippet to rende
 
 [API documentation](http://docs2.icepay.com/calling-our-webservice/transaction-functions/)
 
-### Refund
+### Status
 
 ```php
 $success = $gateway->fetchTransaction([
@@ -105,6 +105,7 @@ $success = $gateway->fetchTransaction([
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction)
 
 ### Refund
+*Do note: refunds have not been tested in production*
 
 ```php
 $success = $gateway->refund([
