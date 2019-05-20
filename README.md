@@ -1,4 +1,7 @@
 # Omnipay: Icepay Payments (ICEX2.0)
+[![Build Status](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/build.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/?branch=master)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 ## Introduction
