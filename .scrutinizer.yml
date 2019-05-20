@@ -53,7 +53,7 @@ build:
 
             tests:
                 override:
-                    - command: ./bin/simple-phpunit --coverage-clover=code-coverage
+                    - command: ./bin/phpunit --coverage-clover=code-coverage
                       coverage:
                           file: code-coverage
                           format: clover
