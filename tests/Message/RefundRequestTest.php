@@ -4,8 +4,8 @@ namespace Omnipay\IcepayPayments\Message;
 
 use GuzzleHttp\Psr7\Request;
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Http\Client;
 use Omnipay\IcepayPayments\AbstractTestCase;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RefundRequestTest extends AbstractTestCase
 {
@@ -63,7 +63,7 @@ class RefundRequestTest extends AbstractTestCase
         $this->assertInstanceOf(RefundResponse::class, $response);
 
         $expectedRequest = new Request(
-            AbstractRequest::METHOD_POST,
+            SymfonyRequest::METHOD_POST,
             'https://www.superbrave.nl/transaction/1M-MR-M33533K5-L00K-47-M3/refund'
         );
 
