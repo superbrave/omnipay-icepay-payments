@@ -64,15 +64,9 @@ build:
                     - php-scrutinizer-run
 
     environment:
-        variables:
-            DATABASE_HOST: '127.0.0.1'
-
         php:
             version: 7.2
-
             pecl_extensions:
-                - igbinary
-                - redis
                 - zip
 
 build_failure_conditions:
