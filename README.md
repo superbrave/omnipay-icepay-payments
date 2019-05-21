@@ -97,12 +97,14 @@ $response = $response->send();
 ### Status
 
 ```php
-$request = $gateway->fetchTransaction([
+$data = [
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-]);
+];
+
+$request = $gateway->fetchTransaction($data);
 
 $response = $request->send();
 ```
@@ -113,12 +115,14 @@ $response = $request->send();
 *Do note: refunds implementation has not been tested.*
 
 ```php
-$request = $gateway->refund([
+$data = [
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-]);
+];
+
+$request = $gateway->refund($data);
 
 $response = $request->send();
 ```
