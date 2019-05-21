@@ -5,6 +5,7 @@ namespace Omnipay\IcepayPayments\Message;
 use DateTime;
 use GuzzleHttp\Psr7\Request;
 use Omnipay\IcepayPayments\AbstractTestCase;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
  * Class CreateTransactionRequestTest.
@@ -126,7 +127,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
         $this->assertInstanceOf(CreateTransactionResponse::class, $response);
 
         $expectedRequest = new Request(
-            AbstractRequest::METHOD_POST,
+            SymfonyRequest::METHOD_POST,
             'https://www.superbrave.nl/contract/transaction'
         );
 

@@ -4,6 +4,7 @@ namespace Omnipay\IcepayPayments\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The request for refunding at Icepay.
@@ -38,7 +39,7 @@ class RefundRequest extends AbstractRequest
         }
 
         $this->sendRequest(
-            self::METHOD_POST,
+            Request::METHOD_POST,
             sprintf(
                 '/transaction/%s/refund',
                 $this->getTransactionReference()
