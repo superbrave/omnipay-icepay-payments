@@ -30,7 +30,7 @@ class RefundRequest extends AbstractRequest
     /**
      * {@inheritdoc}
      *
-     * @throws InvalidRequestException When transaction reference is not set.
+     * @throws InvalidRequestException when transaction reference is not set
      */
     public function sendData($data): ResponseInterface
     {
