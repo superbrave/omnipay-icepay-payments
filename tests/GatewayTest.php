@@ -66,10 +66,11 @@ class GatewayTest extends AbstractTestCase
             $setter = 'set'.ucfirst($this->camelCase($key));
             $value = uniqid();
             $this->gateway->$setter($value);
+            $this->assertSame($value, $this->gateway->$getter());
 
             // request should have matching property, with correct value
             $request = $this->gateway->fetchTransaction();
-            $this->assertSame($value, $request->$getter());
+            $this->assertSame($this->gateway->$getter(), $request->$getter());
         }
     }
 
