@@ -78,9 +78,9 @@ class GatewayTest extends AbstractTestCase
      */
     public function testAuthorize(): void
     {
-        $gateway = $this->gateway->authorize($this->options);
+        $request = $this->gateway->authorize($this->options);
 
-        $this->assertInstanceOf(CreateTransactionRequest::class, $gateway);
+        $this->assertInstanceOf(CreateTransactionRequest::class, $request);
     }
 
     /**
@@ -88,9 +88,9 @@ class GatewayTest extends AbstractTestCase
      */
     public function testCompleteAuthorize(): void
     {
-        $gateway = $this->gateway->completeAuthorize($this->options);
+        $request = $this->gateway->completeAuthorize($this->options);
 
-        $this->assertInstanceOf(TransactionStatusRequest::class, $gateway);
+        $this->assertInstanceOf(TransactionStatusRequest::class, $request);
     }
 
     /**
@@ -98,9 +98,9 @@ class GatewayTest extends AbstractTestCase
      */
     public function testCapture(): void
     {
-        $gateway = $this->gateway->capture($this->options);
+        $request = $this->gateway->capture($this->options);
 
-        $this->assertInstanceOf(TransactionStatusRequest::class, $gateway);
+        $this->assertInstanceOf(TransactionStatusRequest::class, $request);
     }
 
     /**
@@ -108,9 +108,9 @@ class GatewayTest extends AbstractTestCase
      */
     public function testRefund(): void
     {
-        $gateway = $this->gateway->refund($this->options);
+        $request = $this->gateway->refund($this->options);
 
-        $this->assertInstanceOf(RefundRequest::class, $gateway);
+        $this->assertInstanceOf(RefundRequest::class, $request);
     }
 
     /**
