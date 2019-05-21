@@ -84,7 +84,9 @@ $data = [
     ],
 ];
 
-$response = $gateway->authorize($data)->send()->getData();
+$request = $gateway->authorize($data);
+
+$response = $response->send();
 ```
 This will return the order details as well as the checkout HTML snippet to render on your site.
 
@@ -93,13 +95,14 @@ This will return the order details as well as the checkout HTML snippet to rende
 ### Status
 
 ```php
-$success = $gateway->fetchTransaction([
+$request = $gateway->fetchTransaction([
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-])->send()
-->isSuccessful();
+]);
+
+$response = $request->send();
 ```
 
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction)
@@ -108,13 +111,14 @@ $success = $gateway->fetchTransaction([
 *Do note: refunds have not been tested in production*
 
 ```php
-$success = $gateway->refund([
+$request = $gateway->refund([
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-])->send()
-->isSuccessful();
+]);
+
+$response = $request->send();
 ```
 
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction/refund)
