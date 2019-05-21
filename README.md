@@ -89,7 +89,6 @@ $data = [
 
 $response = $gateway->authorize($data)->send()->getData();
 ```
-This will return the order details as well as the checkout HTML snippet to render on your site.
 
 [API documentation](http://docs2.icepay.com/calling-our-webservice/transaction-functions/)
 
@@ -108,7 +107,7 @@ $success = $gateway->fetchTransaction([
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction)
 
 ### Refund
-*Do note: refunds have not been tested in production*
+*Do note: refunds implementation has not been tested.*
 
 ```php
 $success = $gateway->refund([
