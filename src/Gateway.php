@@ -38,6 +38,8 @@ class Gateway extends AbstractGateway
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     public function getName(): string
     {
