@@ -1,8 +1,11 @@
 <?php
 
-namespace Omnipay\IcepayPayments\Message;
+namespace Omnipay\IcepayPayments\Tests\Message;
 
-use Omnipay\IcepayPayments\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\AbstractResponse;
+use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
+use Omnipay\IcepayPayments\Message\CreateTransactionResponse;
+use Omnipay\IcepayPayments\Tests\AbstractTestCase;
 
 /**
  * Class CreateTransactionResponseTest.
