@@ -1,10 +1,12 @@
 <?php
 
-namespace Omnipay\IcepayPayments\Message;
+namespace Omnipay\IcepayPayments\Tests\Message;
 
 use GuzzleHttp\Psr7\Request;
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\IcepayPayments\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\RefundResponse;
+use Omnipay\IcepayPayments\Tests\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\RefundRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class RefundRequestTest extends AbstractTestCase

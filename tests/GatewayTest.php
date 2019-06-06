@@ -1,8 +1,9 @@
 <?php
 
-namespace Omnipay\IcepayPayments;
+namespace Omnipay\IcepayPayments\Tests;
 
 use Omnipay\Common\GatewayInterface;
+use Omnipay\IcepayPayments\Gateway;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\RefundRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;

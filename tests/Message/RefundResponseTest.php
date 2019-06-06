@@ -1,8 +1,12 @@
 <?php
 
-namespace Omnipay\IcepayPayments\Message;
+namespace Omnipay\IcepayPayments\Tests\Message;
 
-use Omnipay\IcepayPayments\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\AbstractResponse;
+use Omnipay\IcepayPayments\Message\RefundRequest;
+use Omnipay\IcepayPayments\Message\RefundResponse;
+use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
+use Omnipay\IcepayPayments\Tests\AbstractTestCase;
 
 /**
  * Class RefundResponseTest.

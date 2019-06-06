@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\IcepayPayments;
+namespace Omnipay\IcepayPayments\Tests;
 
 use Http\Mock\Client as ClientMock;
 use Omnipay\Common\Http\Client;
