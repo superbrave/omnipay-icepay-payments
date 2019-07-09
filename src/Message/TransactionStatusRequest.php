@@ -17,10 +17,6 @@ class TransactionStatusRequest extends AbstractRequest
         $data = parent::getData();
 
         $data['ContractProfileId'] = $this->getContractProfileId();
-        $data['AmountInCents'] = $this->getAmountInteger();
-        $data['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Reference'] = $this->getReference();
-        $data['Timestamp'] = $this->getTimestamp()->format(self::TIMESTAMP_FORMAT);
 
         return $data;
     }

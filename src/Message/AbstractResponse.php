@@ -94,10 +94,22 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
     }
 
     /**
+     * There is no real way to know if the user pressed cancelled when the status is delayed.
+     * We can, however, check if we get an undocumented error message.
+     * This should not happen, but it still does.
+     *
+     * {@inheritdoc}
+     */
+    public function isCancelled(): bool
+    {
+        return isset($this->data[0]['ErrorAt']) && isset($this->data[0]['Description']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTransactionReference(): ?string
     {
-        return $this->data['transactionId'] ?? null;
+        return $this->data['transactionId'] ?? ($this->data['providerTransactionId'] ?? null);
     }
 }

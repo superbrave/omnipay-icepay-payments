@@ -2,7 +2,6 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
-use DateTime;
 use GuzzleHttp\Psr7\Request;
 use Omnipay\IcepayPayments\AbstractTestCase;
 
@@ -35,17 +34,8 @@ class TransactionStatusRequestTest extends AbstractTestCase
      */
     public function testGetData(): void
     {
-        $this->request->setAmountInteger(1337);
-        $this->request->setCurrencyCode('EUR');
-        $this->request->setReference('2fad9b1b-a2d3-455c-bc29-b79516fd3257');
-        $this->request->setTimestamp(new DateTime('2019-03-09T12:00:00'));
-
         $expectedData = [
             'ContractProfileId' => '64eb3717-8b5d-4088-8108-93224675e538',
-            'AmountInCents' => 1337,
-            'CurrencyCode' => 'EUR',
-            'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
-            'Timestamp' => '2019-03-09T12:00:00Z',
         ];
         $this->assertEquals($expectedData, $this->request->getData());
     }

@@ -24,7 +24,7 @@ class TransactionStatusResponse extends AbstractResponse
      */
     public function isCancelled(): bool
     {
-        return $this->data['statusCode'] === self::RESPONSE_STATUS_CANCELLED;
+        return parent::isCancelled() || $this->data['statusCode'] === self::RESPONSE_STATUS_CANCELLED;
     }
 
     /**
