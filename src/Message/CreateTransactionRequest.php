@@ -3,6 +3,7 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use Omnipay\Common\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The request for creating a transaction at Icepay.
@@ -59,7 +60,7 @@ class CreateTransactionRequest extends AbstractRequest
     public function sendData($data): ResponseInterface
     {
         $this->sendRequest(
-            self::METHOD_POST,
+            Request::METHOD_POST,
             '/contract/transaction',
             $data
         );

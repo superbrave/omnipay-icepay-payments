@@ -1,9 +1,12 @@
 <?php
 
-namespace Omnipay\IcepayPayments\Message;
+namespace Omnipay\IcepayPayments\Tests\Message;
 
 use GuzzleHttp\Psr7\Request;
-use Omnipay\IcepayPayments\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
+use Omnipay\IcepayPayments\Message\TransactionStatusResponse;
+use Omnipay\IcepayPayments\Tests\AbstractTestCase;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
  * Class TransactionStatusRequestTest.
@@ -56,7 +59,7 @@ class TransactionStatusRequestTest extends AbstractTestCase
         $this->assertInstanceOf(TransactionStatusResponse::class, $response);
 
         $expectedRequest = new Request(
-            AbstractRequest::METHOD_POST,
+            SymfonyRequest::METHOD_POST,
             'https://www.superbrave.nl/transaction/e7ca29c8-f1f4-4a4c-a968-0f9667d0519d'
         );
 

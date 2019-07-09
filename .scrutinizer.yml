@@ -1,0 +1,75 @@
+filter:
+    paths:
+        - src/
+
+    excluded_paths:
+        - bin/
+        - tests
+        - var/
+
+    dependency_paths:
+        - vendor/
+
+checks:
+    php: true
+
+build:
+    dependencies:
+        override:
+            - composer install --no-interaction --prefer-dist --optimize-autoloader
+
+    nodes:
+        composer-file-validation:
+            dependencies:
+                override:
+                    - true
+
+            tests:
+                override:
+                    - composer validate
+
+        code-standards:
+            tests:
+                override:
+                    - ./bin/php-cs-fixer fix --dry-run -v
+
+        security-check:
+            requires:
+                - branch: master
+
+            dependencies:
+                override:
+                    - true
+
+            tests:
+                override:
+                    - if [ -z "$SCRUTINIZER_PR_SOURCE_BRANCH" ]; then curl -o security-checker.phar https://get.sensiolabs.org/security-checker.phar; fi;
+                    - if [ -z "$SCRUTINIZER_PR_SOURCE_BRANCH" ]; then php security-checker.phar security:check; fi;
+
+        phpunit:
+            requires:
+                - node: composer-file-validation
+                - node: code-standards
+
+            tests:
+                override:
+                    - command: ./bin/phpunit --coverage-clover=code-coverage
+                      coverage:
+                          file: code-coverage
+                          format: clover
+
+        static-code-analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+
+    environment:
+        php:
+            version: 7.2
+            pecl_extensions:
+                - zip
+
+build_failure_conditions:
+    - 'elements.rating(<= D).new.exists' # No new classes/methods with a rating of D or worse.
+    - 'project.metric("scrutinizer.quality", < 8)' # Code Quality Rating drops below 8.
+    - 'project.metric("scrutinizer.test_coverage", < 0.80)' # Code Coverage drops below 80%.

@@ -1,4 +1,7 @@
 # Omnipay: Icepay Payments (ICEX2.0)
+[![Build Status](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/build.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/superbrave/omnipay-icepay-payments/?branch=master)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 ## Introduction
@@ -84,37 +87,44 @@ $data = [
     ],
 ];
 
-$response = $gateway->authorize($data)->send()->getData();
+$request = $gateway->authorize($data);
+
+$response = $response->send();
 ```
-This will return the order details as well as the checkout HTML snippet to render on your site.
 
 [API documentation](http://docs2.icepay.com/calling-our-webservice/transaction-functions/)
 
 ### Status
 
 ```php
-$success = $gateway->fetchTransaction([
+$data = [
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-])->send()
-->isSuccessful();
+];
+
+$request = $gateway->fetchTransaction($data);
+
+$response = $request->send();
 ```
 
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction)
 
 ### Refund
-*Do note: refunds have not been tested in production*
+*Do note: refunds implementation has not been tested.*
 
 ```php
-$success = $gateway->refund([
+$data = [
     'ContractProfileId' => '85cf0581-36e2-45c7-8d8c-a24c6f52902c',
     'AmountInCents' => 1337,
     'CurrencyCode' => 'EUR',
     'Reference' => '829c7998-6497-402c-a049-51801ba33662',
-])->send()
-->isSuccessful();
+];
+
+$request = $gateway->refund($data);
+
+$response = $request->send();
 ```
 
 [API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction/refund)

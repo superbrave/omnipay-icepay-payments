@@ -1,8 +1,11 @@
 <?php
 
-namespace Omnipay\IcepayPayments\Message;
+namespace Omnipay\IcepayPayments\Tests\Message;
 
-use Omnipay\IcepayPayments\AbstractTestCase;
+use Omnipay\IcepayPayments\Message\AbstractResponse;
+use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
+use Omnipay\IcepayPayments\Message\TransactionStatusResponse;
+use Omnipay\IcepayPayments\Tests\AbstractTestCase;
 
 /**
  * Class TransactionStatusResponseTest.
@@ -22,6 +25,7 @@ class TransactionStatusResponseTest extends AbstractTestCase
         parent::setUp();
 
         $this->request = new TransactionStatusRequest($this->httpClient, $this->httpRequest);
+        $this->request->setTransactionReference('7c9cb2f4-83ce-4b10-8d5c-de230181224f');
     }
 
     /**
@@ -42,6 +46,7 @@ class TransactionStatusResponseTest extends AbstractTestCase
 
         $this->assertTrue($response->isSuccessful());
         $this->assertSame($expectedResponseBody, $response->getData());
+        $this->assertSame($expectedResponseBody['transactionId'], $response->getTransactionReference());
     }
 
     /**
@@ -50,7 +55,7 @@ class TransactionStatusResponseTest extends AbstractTestCase
     public function testIfResponseReturnNotSuccessful(): void
     {
         $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionStatusFail.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
+        $response = new TransactionStatusResponse($this->request, json_decode($responseJsonBody, true));
 
         $this->assertFalse($response->isSuccessful());
     }

@@ -5,17 +5,13 @@ namespace Omnipay\IcepayPayments\Message;
 use DateTimeInterface;
 use Omnipay\Common\Message\AbstractRequest as OmnipayAbstractRequest;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AbstractRequest.
  */
 abstract class AbstractRequest extends OmnipayAbstractRequest
 {
-    /**
-     * @var string
-     */
-    public const METHOD_POST = 'POST';
-
     /**
      * @var string
      */
@@ -47,7 +43,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
         $headers = $this->getAuthenticationHeaders($securityHash);
         $body = null;
 
-        if ($method === self::METHOD_POST) {
+        if ($method === Request::METHOD_POST) {
             $headers['Content-Type'] = 'application/json';
             $body = json_encode($data);
         }

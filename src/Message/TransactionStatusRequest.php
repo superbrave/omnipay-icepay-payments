@@ -3,6 +3,7 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use Omnipay\Common\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The request for getting the transaction status at Icepay.
@@ -27,7 +28,7 @@ class TransactionStatusRequest extends AbstractRequest
     public function sendData($data): ResponseInterface
     {
         $this->sendRequest(
-            self::METHOD_POST,
+            Request::METHOD_POST,
             sprintf(
                 '/transaction/%s',
                 $this->getTransactionReference()
