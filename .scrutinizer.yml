@@ -67,6 +67,7 @@ build:
         php:
             version: 7.2
             pecl_extensions:
+                - pcov
                 - zip
 
 build_failure_conditions:
