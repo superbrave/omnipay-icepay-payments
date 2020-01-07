@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a3d837764fae526db4a1f9b5fa728c6",
+    "content-hash": "75ca94d04bf2250263379e8589841fde",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -3312,39 +3312,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
-        },
-        {
-            "name": "superbrave/coding-standards",
-            "version": "0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/superbrave/coding-standards.git",
-                "reference": "8237e860a6acd738122a8af58e05df81475c6610"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/superbrave/coding-standards/zipball/8237e860a6acd738122a8af58e05df81475c6610",
-                "reference": "8237e860a6acd738122a8af58e05df81475c6610",
-                "shasum": ""
-            },
-            "require-dev": {
-                "php": ">=5.6.0",
-                "squizlabs/php_codesniffer": "^3.2"
-            },
-            "type": "phpcodesniffer-standard",
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Stefan Thoolen",
-                    "email": "st@superbrave.nl"
-                }
-            ],
-            "description": "CodeSniffer ruleset for the Superbrave coding standard",
-            "keywords": [
-                "Coding Standard",
-                "phpcs"
-            ],
-            "time": "2018-05-09T12:57:33+00:00"
         },
         {
             "name": "symfony/console",
