@@ -122,16 +122,16 @@ class GatewayTest extends AbstractTestCase
      */
     public function provideInitializeBaseUrlCases(): array
     {
-        return array(
-            array(
-                array('testMode' => false),
+        return [
+            [
+                ['testMode' => false],
                 Gateway::API_BASE_URL,
-            ),
-            array(
-                array('testMode' => true),
+            ],
+            [
+                ['testMode' => true],
                 Gateway::TEST_API_BASE_URL,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

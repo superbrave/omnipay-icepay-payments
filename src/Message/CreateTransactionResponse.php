@@ -14,9 +14,9 @@ class CreateTransactionResponse extends AbstractResponse
     {
         return parent::isSuccessful()
             && ($this->getTransactionReference() !== null)
-            && in_array($this->data['transactionStatusCode'], array(
+            && in_array($this->data['transactionStatusCode'], [
                 self::RESPONSE_STATUS_STARTED,
-            ));
+            ]);
     }
 
     /**

@@ -51,17 +51,17 @@ class Gateway extends AbstractGateway
      */
     public function getDefaultParameters(): array
     {
-        return array(
+        return [
             'contractProfileId' => '',
             'secretKey' => '',
             'testMode' => false,
-        );
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $parameters = array()): self
+    public function initialize(array $parameters = []): self
     {
         parent::initialize($parameters);
 
