@@ -24,7 +24,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     {
         $this->validate('contractProfileId', 'secretKey');
 
-        return array();
+        return [];
     }
 
     /**
@@ -67,7 +67,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     {
         $responseBody = json_decode($this->getResponse()->getBody()->getContents(), true);
         if (is_array($responseBody) === false) {
-            $responseBody = array();
+            $responseBody = [];
         }
 
         return $responseBody;
@@ -105,10 +105,10 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     private function getAuthenticationHeaders(string $securityHash): array
     {
-        return array(
+        return [
             'CHECKSUM' => $securityHash,
             'USERID' => $this->getContractProfileId(),
-        );
+        ];
     }
 
     /**
