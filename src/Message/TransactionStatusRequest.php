@@ -36,9 +36,16 @@ class TransactionStatusRequest extends AbstractRequest
             $data
         );
 
+        $response = array_merge(
+            $this->getResponseBody(),
+            [
+                'statusCode' => $this->getResponse()->getStatusCode(),
+            ]
+        );
+
         return new TransactionStatusResponse(
             $this,
-            $this->getResponseBody()
+            $response
         );
     }
 }
