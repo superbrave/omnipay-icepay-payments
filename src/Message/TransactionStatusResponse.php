@@ -12,7 +12,10 @@ class TransactionStatusResponse extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
-        return isset($this->data['statusCode']) && $this->data['statusCode'] === 200;
+        return (isset($this->data['status']) && in_array($this->data['status'], [
+            self::RESPONSE_STATUS_COMPLETED,
+            self::RESPONSE_STATUS_SETTLED,
+        ])) && (isset($this->data['statusCode']) && $this->data['statusCode'] === 200);
     }
 
     /**
