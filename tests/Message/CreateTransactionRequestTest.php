@@ -87,7 +87,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
                     'TotalNetAmountCents' => 1337,
                 ],
                 'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
-                'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex'
+                'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
             ],
         ];
         $this->assertEquals($expectedData, $this->request->getData());
