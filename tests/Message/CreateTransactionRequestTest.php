@@ -39,8 +39,8 @@ class CreateTransactionRequestTest extends AbstractTestCase
     {
         $this->request->setAmountInteger(1337);
         $this->request->setCurrencyCode('EUR');
+        $this->request->setTransactionId('2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex');
         $this->request->setReference('2fad9b1b-a2d3-455c-bc29-b79516fd3257');
-
         $this->request->setReturnUrl('https://www.superbrave.nl/return-url');
         $this->request->setCancelUrl('https://www.superbrave.nl/cancel-url');
         $this->request->setNotifyUrl('https://www.superbrave.nl/notify-url');
@@ -55,7 +55,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
                 'ContractProfileId' => '64eb3717-8b5d-4088-8108-93224675e538',
                 'AmountInCents' => 1337,
                 'CurrencyCode' => 'EUR',
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
+                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
             ],
             'Postback' => [
                 'UrlCompleted' => 'https://www.superbrave.nl/return-url',
@@ -80,7 +80,14 @@ class CreateTransactionRequestTest extends AbstractTestCase
                 'Timestamp' => '2019-03-09T12:00:00Z',
                 'LanguageCode' => 'nl',
                 'CountryCode' => 'NL',
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
+                'Order' => [
+                    'OrderNumber' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
+                    'CurrencyCode' => 'EUR',
+                    'TotalGrossAmountCents' => 1337,
+                    'TotalNetAmountCents' => 1337,
+                ],
+                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
+                'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
             ],
         ];
         $this->assertEquals($expectedData, $this->request->getData());
