@@ -22,7 +22,7 @@ class CreateTransactionRequest extends AbstractRequest
                 'ContractProfileId' => $this->getContractProfileId(),
                 'AmountInCents' => $this->getAmountInteger(),
                 'CurrencyCode' => $this->getCurrencyCode(),
-                'Reference' => $this->getReference(),
+                'Reference' => $this->getTransactionId(),
             ],
             'Postback' => [
                 'UrlCompleted' => $this->getReturnUrl(),
@@ -47,7 +47,14 @@ class CreateTransactionRequest extends AbstractRequest
                 'Timestamp' => $this->getTimestamp()->format(self::TIMESTAMP_FORMAT),
                 'LanguageCode' => $this->getLanguageCode(),
                 'CountryCode' => $this->getCountryCode(),
-                'Reference' => $this->getReference(),
+                'Reference' => $this->getTransactionId(),
+                'Order' => [
+                    'OrderNumber' => $this->getReference(),
+                    'CurrencyCode' => $this->getCurrencyCode(),
+                    'TotalGrossAmountCents' => $this->getAmountInteger(),
+                    'TotalNetAmountCents' => $this->getAmountInteger(),
+                ],
+                'Description' => $this->getTransactionId(),
             ],
         ];
 
