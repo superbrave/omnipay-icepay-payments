@@ -33,13 +33,19 @@ class TransactionStatusResponseTest extends AbstractTestCase
      */
     public function testResponseReturnsSuccessful(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionStatusSuccess.json');
-        $response = new TransactionStatusResponse($this->request, json_decode($responseJsonBody, true));
+        $responseJsonBody = json_decode(file_get_contents(__DIR__.'/../Mocks/TransactionStatusSuccess.json'), true);
+        $data = array_merge(
+            $responseJsonBody,
+            [
+                'statusCode' => 200,
+            ]
+        );
 
+        $response = new TransactionStatusResponse($this->request, $data);
         $expectedResponseBody = [
             'contractId' => 'NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4',
             'transactionId' => '7c9cb2f4-83ce-4b10-8d5c-de230181224f',
-            'statusCode' => AbstractResponse::RESPONSE_STATUS_COMPLETED,
+            'statusCode' => 200,
             'transactionStatusDetails' => '',
             'acquirerTransactionId' => '',
         ];
