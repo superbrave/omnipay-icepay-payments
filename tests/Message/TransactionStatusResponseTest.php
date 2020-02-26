@@ -45,9 +45,10 @@ class TransactionStatusResponseTest extends AbstractTestCase
         $expectedResponseBody = [
             'contractId' => 'NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4',
             'transactionId' => '7c9cb2f4-83ce-4b10-8d5c-de230181224f',
-            'statusCode' => 200,
+            'status' => 'COMPLETED',
             'transactionStatusDetails' => '',
             'acquirerTransactionId' => '',
+            'statusCode' => 200,
         ];
 
         $this->assertTrue($response->isSuccessful());
