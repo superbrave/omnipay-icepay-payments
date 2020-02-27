@@ -48,4 +48,14 @@ class CompleteAuthoriseAndCaptureRequest extends AbstractRequest
             $response
         );
     }
+
+    /**
+     * Get the HttpRequest.
+     *
+     * @return Request
+     */
+    public function getHttpRequest(): Request
+    {
+        return $this->httpRequest;
+    }
 }
