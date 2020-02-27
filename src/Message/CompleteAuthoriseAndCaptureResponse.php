@@ -16,9 +16,9 @@ class CompleteAuthoriseAndCaptureResponse extends AbstractResponse
     public function isSuccessful(): bool
     {
         return isset($this->data['status']) && in_array($this->data['status'], [
-                self::RESPONSE_STATUS_COMPLETED,
-                self::RESPONSE_STATUS_SETTLED,
-            ]);
+            self::RESPONSE_STATUS_COMPLETED,
+            self::RESPONSE_STATUS_SETTLED,
+        ]);
     }
 
     /**
