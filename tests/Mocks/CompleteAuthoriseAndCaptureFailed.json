@@ -1,6 +1,6 @@
 {
     "transactionId": "",
-    "statusCode": "",
+    "status": "",
     "transactionStatusDetails": "",
     "acquirerTransactionId": ""
 }
