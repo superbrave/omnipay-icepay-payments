@@ -102,7 +102,7 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
      */
     public function isCancelled(): bool
     {
-        return (isset($this->data[0]['ErrorAt']) && isset($this->data[0]['Description']));
+        return isset($this->data[0]['ErrorAt']) && isset($this->data[0]['Description']);
     }
 
     /**
