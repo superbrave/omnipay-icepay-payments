@@ -32,16 +32,16 @@ class CreateTransactionResponseTest extends AbstractTestCase
      */
     public function testIfResponseReturnsSuccessful(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionSuccess.json');
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionSuccess.json');
         $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
 
         $expectedResponseBody = [
-            'contractId' => 'NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4',
-            'transactionId' => '64eb3717-8b5d-4088-8108-93224675e538',
+            'contractId' => '0332ca56-90eb-4859-8d42-2c0898214069',
+            'transactionId' => '6e9096aa-7ab8-4cb6-83f6-2f4847e5608a',
             'transactionStatusCode' => AbstractResponse::RESPONSE_STATUS_STARTED,
             'transactionStatusDetails' => '',
             'acquirerRequestUri' => 'https://www.superbrave.nl/redirect-url',
-            'acquirerTransactionId' => '',
+            'acquirerTransactionId' => '12345678',
         ];
 
         $this->assertTrue($response->isSuccessful());
@@ -53,10 +53,32 @@ class CreateTransactionResponseTest extends AbstractTestCase
      */
     public function testIfResponseReturnNotSuccessful(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionFail.json');
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
         $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
 
         $this->assertFalse($response->isSuccessful());
+    }
+
+    /**
+     * Tests if CreateTransactionResponse::isCancelled will return true from the json response.
+     */
+    public function testIfResponseIsCancelled(): void
+    {
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionCancelled.json');
+        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
+
+        $this->assertTrue($response->isCancelled());
+    }
+
+    /**
+     * Tests if CreateTransactionResponse::isCancelled will return true when we cannot create a transaction at Icepay.
+     */
+    public function testsIfResponseIsFailed(): void
+    {
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
+        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
+
+        $this->assertTrue($response->isCancelled());
     }
 
     /**
@@ -64,7 +86,7 @@ class CreateTransactionResponseTest extends AbstractTestCase
      */
     public function testIfResponseIsARedirect(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionSuccess.json');
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionSuccess.json');
         $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
 
         $this->assertTrue($response->isRedirect());
@@ -76,7 +98,7 @@ class CreateTransactionResponseTest extends AbstractTestCase
      */
     public function testIfResponseIsNotARedirect(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/TransactionFail.json');
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
         $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
 
         $this->assertFalse($response->isRedirect());

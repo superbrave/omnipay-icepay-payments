@@ -36,16 +36,9 @@ class CompleteAuthoriseAndCaptureRequest extends AbstractRequest
             $data
         );
 
-        $response = array_merge(
-            $this->getResponseBody(),
-            [
-                'statusCode' => $this->getResponse()->getStatusCode(),
-            ]
-        );
-
         return new CompleteAuthoriseAndCaptureResponse(
             $this,
-            $response
+            $this->getResponseBody()
         );
     }
 

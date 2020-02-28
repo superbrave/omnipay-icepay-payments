@@ -90,7 +90,7 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
      */
     public function isSuccessful(): bool
     {
-        return isset($this->data['contractId']);
+        return isset($this->data['contractId']) && isset($this->data['transactionId']);
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
      */
     public function isCancelled(): bool
     {
-        return isset($this->data[0]['ErrorAt']) && isset($this->data[0]['Description']);
+        return (isset($this->data[0]['ErrorAt']) && isset($this->data[0]['Description']));
     }
 
     /**
@@ -110,6 +110,6 @@ abstract class AbstractResponse extends OmnipayAbstractResponse
      */
     public function getTransactionReference(): ?string
     {
-        return $this->data['transactionId'] ?? ($this->data['providerTransactionId'] ?? null);
+        return $this->data['transactionId'] ?? null;
     }
 }

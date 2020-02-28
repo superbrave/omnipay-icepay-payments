@@ -52,7 +52,7 @@ class RefundResponseTest extends AbstractTestCase
      */
     public function testIfResponseReturnNotSuccessful(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/RefundFail.json');
+        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/RefundFailed.json');
         $response = new RefundResponse($this->request, json_decode($responseJsonBody, true));
 
         $this->assertFalse($response->isSuccessful());

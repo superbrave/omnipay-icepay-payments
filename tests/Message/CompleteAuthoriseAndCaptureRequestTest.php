@@ -66,4 +66,13 @@ class CompleteAuthoriseAndCaptureRequestTest extends AbstractTestCase
         $this->assertEquals($expectedRequest->getMethod(), $this->clientMock->getLastRequest()->getMethod());
         $this->assertEquals($expectedRequest->getUri(), $this->clientMock->getLastRequest()->getUri());
     }
+
+    /**
+     * Tests if CompleteAuthoriseAndCaptureRequest getRequest function will return a Symfony HttpRequest object.
+     */
+    public function testGetHttpRequest(): void
+    {
+        $this->assertSame($this->httpRequest, $this->request->getHttpRequest());
+        $this->assertInstanceOf(SymfonyRequest::class, $this->request->getHttpRequest());
+    }
 }

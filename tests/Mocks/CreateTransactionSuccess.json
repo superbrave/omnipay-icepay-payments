@@ -1,0 +1,8 @@
+{
+  "contractId": "0332ca56-90eb-4859-8d42-2c0898214069",
+  "transactionId": "6e9096aa-7ab8-4cb6-83f6-2f4847e5608a",
+  "transactionStatusCode": "STARTED",
+  "transactionStatusDetails": "",
+  "acquirerRequestUri": "https://www.superbrave.nl/redirect-url",
+  "acquirerTransactionId": "12345678"
+}

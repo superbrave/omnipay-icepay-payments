@@ -13,10 +13,7 @@ class CreateTransactionResponse extends AbstractResponse
     public function isSuccessful(): bool
     {
         return parent::isSuccessful()
-            && ($this->getTransactionReference() !== null)
-            && in_array($this->data['transactionStatusCode'], [
-                self::RESPONSE_STATUS_STARTED,
-            ]);
+            && (isset($this->data['transactionStatusCode']) && $this->data['transactionStatusCode'] === self::RESPONSE_STATUS_STARTED);
     }
 
     /**
@@ -32,6 +29,6 @@ class CreateTransactionResponse extends AbstractResponse
      */
     public function getRedirectUrl(): string
     {
-        return $this->data['acquirerRequestUri'];
+        return $this->data['acquirerRequestUri'] ?? '';
     }
 }

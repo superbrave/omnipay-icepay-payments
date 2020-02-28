@@ -2,6 +2,8 @@
 
 namespace Omnipay\IcepayPayments\Message;
 
+use Omnipay\Common\Message\RequestInterface;
+
 /**
  * The response after getting the transaction status at Icepay.
  * For this response, we check the response (statusCode) of the payment transaction at Icepay.
@@ -9,11 +11,30 @@ namespace Omnipay\IcepayPayments\Message;
 class TransactionStatusResponse extends AbstractResponse
 {
     /**
+     * @var int
+     */
+    private $statusCode;
+
+    /**
+     * TransactionStatusResponse constructor.
+     *
+     * @param RequestInterface $request
+     * @param mixed            $data
+     * @param int              $statusCode
+     */
+    public function __construct(RequestInterface $request, $data, int $statusCode)
+    {
+        parent::__construct($request, $data);
+
+        $this->statusCode = $statusCode;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isSuccessful(): bool
     {
-        return isset($this->data['statusCode']) && $this->data['statusCode'] === 200;
+        return $this->statusCode === 200;
     }
 
     /**
