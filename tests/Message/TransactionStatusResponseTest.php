@@ -2,7 +2,6 @@
 
 namespace Omnipay\IcepayPayments\Tests\Message;
 
-use Omnipay\IcepayPayments\Message\AbstractResponse;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusResponse;
 use Omnipay\IcepayPayments\Tests\AbstractTestCase;
