@@ -22,8 +22,8 @@ class CompleteAuthoriseAndCaptureResponse extends AbstractResponse
     /**
      * {@inheritdoc}
      *
-     * In case there is no status 'cancelled' available yet, look up for a statusCode queryString in the HttpRequest.
-     * Icepay redirects you to the complete page with the statusCode query string.
+     * In case there is no status 'cancelled' available in the response (yet), check if there is statusCode in the
+     * queryString. Icepay calls a postback to the completeUrl with data of the payment transaction as queryString.
      */
     public function isCancelled(): bool
     {
