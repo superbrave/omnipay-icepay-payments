@@ -28,7 +28,7 @@ class CompleteAuthoriseAndCaptureResponse extends AbstractResponse
     public function isCancelled(): bool
     {
         return isset($this->data['status']) && $this->data['status'] === self::RESPONSE_STATUS_CANCELLED
-            || $this->getRequest()->getHttpRequest()->get('statusCode') === self::RESPONSE_STATUS_CANCELLED;
+            || $this->request->getHttpRequest()->get('statusCode') === self::RESPONSE_STATUS_CANCELLED;
     }
 
     /**
