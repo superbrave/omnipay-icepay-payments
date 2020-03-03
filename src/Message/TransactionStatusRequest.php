@@ -103,8 +103,8 @@ class TransactionStatusRequest extends AbstractRequest
      * Will throw an exception if it does not match.
      * Needs the POSTed Json as a php array.
      *
-     * @param Request         $request
-     * @param $contentAsArray
+     * @param Request $request
+     * @param array   $contentAsArray
      *
      * @return bool
      *
@@ -142,7 +142,7 @@ class TransactionStatusRequest extends AbstractRequest
      * Though, they might add a trailing slash. Unsure of this at this point, so check both.
      *
      * @param Request $request
-     * @param $contentAsArray
+     * @param array   $contentAsArray
      *
      * @return array
      */
