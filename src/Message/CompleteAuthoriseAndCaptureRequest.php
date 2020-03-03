@@ -6,9 +6,10 @@ use Omnipay\Common\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * The request for getting the transaction status at Icepay.
+ * The request for retrieving the payment transaction status when the CompleteAuthorise and Capture happens.
+ * The payment transaction status can be different from what we get back as data from Icepay.
  */
-class TransactionStatusRequest extends AbstractRequest
+class CompleteAuthoriseAndCaptureRequest extends AbstractRequest
 {
     /**
      * {@inheritdoc}
@@ -36,10 +37,22 @@ class TransactionStatusRequest extends AbstractRequest
             $data
         );
 
-        return new TransactionStatusResponse(
+        return new CompleteAuthoriseAndCaptureResponse(
             $this,
-            $this->getResponseBody(),
-            $this->getResponse()->getStatusCode()
+            $this->getResponseBody()
         );
+    }
+
+    /**
+     * Get the HttpRequest.
+     * Note: this is not an API request.
+     *
+     * @see Omnipay\Common\Message\AbstractRequest::$httpRequest
+     *
+     * @return Request
+     */
+    public function getHttpRequest(): Request
+    {
+        return $this->httpRequest;
     }
 }

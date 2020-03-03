@@ -4,6 +4,7 @@ namespace Omnipay\IcepayPayments\Tests;
 
 use Omnipay\Common\GatewayInterface;
 use Omnipay\IcepayPayments\Gateway;
+use Omnipay\IcepayPayments\Message\CompleteAuthoriseAndCaptureRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\RefundRequest;
 use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
@@ -92,7 +93,7 @@ class GatewayTest extends AbstractTestCase
     {
         $request = $this->gateway->completeAuthorize($this->options);
 
-        $this->assertInstanceOf(TransactionStatusRequest::class, $request);
+        $this->assertInstanceOf(CompleteAuthoriseAndCaptureRequest::class, $request);
     }
 
     /**
@@ -102,7 +103,7 @@ class GatewayTest extends AbstractTestCase
     {
         $request = $this->gateway->capture($this->options);
 
-        $this->assertInstanceOf(TransactionStatusRequest::class, $request);
+        $this->assertInstanceOf(CompleteAuthoriseAndCaptureRequest::class, $request);
     }
 
     /**

@@ -8,7 +8,7 @@
     "currencyCode": "EUR",
     "amount": 13.37,
     "reference": "1234567-4e4583295b55440eb7301222841030df",
-    "status": "CANCELLED",
+    "status": "FAILED",
     "requestTimestamp": "2020-02-28T12:35:12.187",
     "acquirerId": "69bbc2c0-315e-4958-ae60-3ee52636e379",
     "providerTransactionId": "12345678",

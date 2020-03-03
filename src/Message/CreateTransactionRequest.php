@@ -54,7 +54,7 @@ class CreateTransactionRequest extends AbstractRequest
                     'TotalGrossAmountCents' => $this->getAmountInteger(),
                     'TotalNetAmountCents' => $this->getAmountInteger(),
                 ],
-                'Description' => $this->getTransactionId(),
+                'Description' => $this->getDescription(),
             ],
         ];
 
