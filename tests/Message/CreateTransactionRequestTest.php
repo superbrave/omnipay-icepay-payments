@@ -49,6 +49,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
         $this->request->setLanguageCode('nl');
         $this->request->setCountryCode('NL');
         $this->request->setTimestamp(new DateTime('2019-03-09T12:00:00'));
+        $this->request->setDescription('2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex');
 
         $expectedData = [
             'Contract' => [
@@ -130,6 +131,7 @@ class CreateTransactionRequestTest extends AbstractTestCase
                 'CountryCode' => 'NL',
                 'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
             ],
+            'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
         ];
         $response = $this->request->sendData($data);
 
