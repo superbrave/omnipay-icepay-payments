@@ -76,23 +76,20 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * Safety hash from icepay, to be generated after putting in all the data.
      *
-     * @param string $requestMethod
-     * @param string $urlPath
-     * @param array  $data
-     * @param bool   $urlIsFullUrl  = false. True to have $urlPath be the absolute (full) url
+     * @param string          $requestMethod
+     * @param string          $urlPath
+     * @param array|\stdClass $data
+     * @param bool            $urlIsFullUrl  = false. True to have $urlPath be the absolute (full) url
      *
      * @return string
      */
     protected function getSecurityHash(
         string $requestMethod,
         string $urlPath,
-        array $data,
+        $data,
         bool $urlIsFullUrl = false
     ): string {
         $contractProfileId = $this->getContractProfileId();
-        if (isset($data['ContractProfileId'])) {
-            $contractProfileId = $data['ContractProfileId'];
-        }
 
         $fullUrl = $this->getBaseUrl().$urlPath;
         if ($urlIsFullUrl) {

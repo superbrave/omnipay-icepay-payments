@@ -28,17 +28,9 @@ class TransactionStatusRequest extends AbstractRequest
      */
     public function sendData($data): ResponseInterface
     {
-        try {
-            $transactionStatusResponse = $this->getTransactionStatusFromPostBack();
-        } catch (PostBackException $exception) {
-            // Optional parameter to throw the error instead of fallback.
-            if (isset($data['throwOnPostBackError'])) {
-                throw $exception;
-            }
-            $transactionStatusResponse = false;
-        }
+        $transactionStatusResponse = $this->getTransactionStatusFromPostBack();
 
-        if ($transactionStatusResponse !== false) {
+        if ($transactionStatusResponse !== null) {
             return $transactionStatusResponse;
         }
 
@@ -64,27 +56,31 @@ class TransactionStatusRequest extends AbstractRequest
      *
      * @see http://docs2.icepay.com/payment-process/handling-the-postback/postback-sample/
      *
-     * @return TransactionStatusResponse|bool false when the data is is not sent or not correct
-     *
-     * @throws PostBackException by call to self::validateSecurityHashMatch()
+     * @return TransactionStatusResponse|null - Null when the data is is not sent or not correct
      */
-    private function getTransactionStatusFromPostBack()
+    private function getTransactionStatusFromPostBack(): ?TransactionStatusResponse
     {
         if (stripos($this->httpRequest->getContentType(), 'json') === false) {
-            return false;
+            return null;
         }
 
         try {
-            $contentAsArray = json_decode($this->httpRequest->getContent(), true);
+            $content = $this->httpRequest->getContent();
+            $contentAsArray = json_decode($content, true);
+            $contentAsStdObj = json_decode($content);
         } catch (\LogicException $exception) {
-            return false;
+            return null;
         }
 
         if (is_array($contentAsArray) === false || isset($contentAsArray['StatusCode']) === false) {
-            return false;
+            return null;
         }
 
-        $this->validateSecurityHashMatch($this->httpRequest, $contentAsArray);
+        $this->setContractProfileId($contentAsStdObj->ContractProfileId);
+
+        if ($this->validateSecurityHashMatch($this->httpRequest, $contentAsStdObj) === false) {
+            return null;
+        }
 
         $camelCasedKeysContent = array_combine(
             array_map('lcfirst', array_keys($contentAsArray)),
@@ -103,18 +99,16 @@ class TransactionStatusRequest extends AbstractRequest
      * Will throw an exception if it does not match.
      * Needs the POSTed Json as a php array.
      *
-     * @param Request $request
-     * @param array   $contentAsArray
+     * @param Request   $request
+     * @param \stdClass $contentAsStdObj
      *
      * @return bool
-     *
-     * @throws PostBackException
      */
-    private function validateSecurityHashMatch(Request $request, $contentAsArray): bool
+    private function validateSecurityHashMatch(Request $request, \stdClass $contentAsStdObj): bool
     {
         $sentSecurityHash = $request->headers->get('checksum');
 
-        $possibleHashes = $this->getPossibleValidHashes($request, $contentAsArray);
+        $possibleHashes = $this->getPossibleValidHashes($request, $contentAsStdObj);
 
         foreach ($possibleHashes as $generatedHash) {
             if ($generatedHash === $sentSecurityHash) {
@@ -122,25 +116,19 @@ class TransactionStatusRequest extends AbstractRequest
             }
         }
 
-        throw new PostBackException(
-            sprintf(
-                'Sent security hash %s did not match generated hashes: %s',
-                $sentSecurityHash,
-                implode(', ', $possibleHashes)
-            )
-        );
+        return false;
     }
 
     /**
      * They way Icepay generates the hash is by using our notification url.
      * Though, they might add a trailing slash. Unsure of this at this point, so check both.
      *
-     * @param Request $request
-     * @param array   $contentAsArray
+     * @param Request   $request
+     * @param \stdClass $contentAsStdObj
      *
      * @return array
      */
-    private function getPossibleValidHashes(Request $request, $contentAsArray): array
+    private function getPossibleValidHashes(Request $request, $contentAsStdObj): array
     {
         $notifyUrls = [
             $request->getSchemeAndHttpHost().$request->getRequestUri(),
@@ -152,7 +140,7 @@ class TransactionStatusRequest extends AbstractRequest
             $hashes[] = $this->getSecurityHash(
                 $request->getMethod(),
                 $notifyUrl,
-                $contentAsArray,
+                $contentAsStdObj,
                 true
             );
         }
