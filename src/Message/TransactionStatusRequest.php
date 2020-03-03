@@ -66,7 +66,7 @@ class TransactionStatusRequest extends AbstractRequest
      *
      * @return TransactionStatusResponse|bool False when the data is is not sent or not correct.
      *
-     * @throws PostBackException
+     * @throws PostBackException by call to self::validateSecurityHashMatch()
      */
     private function getTransactionStatusFromPostBack(): ?TransactionStatusResponse
     {
@@ -106,9 +106,11 @@ class TransactionStatusRequest extends AbstractRequest
      * @param Request         $request
      * @param $contentAsArray
      *
+     * @return bool
+     *
      * @throws PostBackException
      */
-    private function validateSecurityHashMatch(Request $request, $contentAsArray): void
+    private function validateSecurityHashMatch(Request $request, $contentAsArray): bool
     {
         $generatedSecurityHash = $this->getSecurityHash(
             Request::METHOD_POST,
@@ -118,14 +120,49 @@ class TransactionStatusRequest extends AbstractRequest
 
         $sentSecurityHash = $request->headers->get('checksum');
 
-        if ($generatedSecurityHash !== $sentSecurityHash) {
-            throw new PostBackException(
-                sprintf(
-                    'Sent security hash %s did not match generated hash %s',
-                    $sentSecurityHash,
-                    $generatedSecurityHash
-                )
+        $possibleHashes = $this->getPossibleValidHashes($request, $contentAsArray);
+
+        foreach ($possibleHashes as $generatedHash) {
+            if ($generatedHash === $sentSecurityHash) {
+                return true;
+            }
+        }
+
+        throw new PostBackException(
+            sprintf(
+                'Sent security hash %s did not match generated hash %s',
+                $sentSecurityHash,
+                $generatedSecurityHash
+            )
+        );
+    }
+
+    /**
+     * They way Icepay generates the hash is by using our notification url.
+     * Though, they might add a trailing slash. Unsure of this at this point, so check both.
+     *
+     * @param Request $request
+     * @param $contentAsArray
+     *
+     * @return array
+     */
+    private function getPossibleValidHashes(Request $request, $contentAsArray): array
+    {
+        $notifyUrls = [
+            $request->getSchemeAndHttpHost() . $request->getRequestUri(),
+            $request->getSchemeAndHttpHost() . $request->getRequestUri() . '/',
+        ];
+
+        $hashes = [];
+        foreach ($notifyUrls as $notifyUrl) {
+            $hashes[] = $this->getSecurityHash(
+                $request->getMethod(),
+                $notifyUrl,
+                $contentAsArray,
+                true
             );
         }
+
+        return $hashes;
     }
 }

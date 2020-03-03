@@ -79,17 +79,27 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      * @param string $requestMethod
      * @param string $urlPath
      * @param array  $data
+     * @param bool   $urlIsFullUrl = false. True to have $urlPath be the absolute (full) url
      *
      * @return string
      */
-    protected function getSecurityHash(string $requestMethod, string $urlPath, array $data): string
-    {
+    protected function getSecurityHash(
+        string $requestMethod,
+        string $urlPath,
+        array $data,
+        bool $urlIsFullUrl = false
+    ): string {
         $contractProfileId = $this->getContractProfileId();
         if (isset($data['ContractProfileId'])) {
             $contractProfileId = $data['ContractProfileId'];
         }
 
-        $toBeHashed = $this->getBaseUrl() . $urlPath . $requestMethod . $contractProfileId . json_encode($data);
+        $fullUrl = $this->getBaseUrl() . $urlPath;
+        if ($urlIsFullUrl) {
+            $fullUrl = $urlPath;
+        }
+
+        $toBeHashed = $fullUrl . $requestMethod . $contractProfileId . json_encode($data);
 
         $hash = hash_hmac(
             'sha256',
