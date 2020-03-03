@@ -84,11 +84,16 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     protected function getSecurityHash(string $requestMethod, string $urlPath, array $data): string
     {
-        $string = $this->getBaseUrl().$urlPath.$requestMethod.$this->getContractProfileId().json_encode($data);
+        $contractProfileId = $this->getContractProfileId();
+        if (isset($data['ContractProfileId'])) {
+            $contractProfileId = $data['ContractProfileId'];
+        }
+
+        $toBeHashed = $this->getBaseUrl() . $urlPath . $requestMethod . $contractProfileId . json_encode($data);
 
         $hash = hash_hmac(
             'sha256',
-            $string,
+            $toBeHashed,
             base64_decode($this->getSecretKey()),
             true
         );

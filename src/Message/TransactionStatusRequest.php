@@ -88,9 +88,14 @@ class TransactionStatusRequest extends AbstractRequest
 
         $this->validateSecurityHashMatch($request, $contentAsArray);
 
+        $camelCasedKeysContent = array_combine(
+            array_map('lcfirst', array_keys($contentAsArray)),
+            array_values($contentAsArray)
+        );
+
         return new TransactionStatusResponse(
             $this,
-            $contentAsArray,
+            $camelCasedKeysContent,
             200
         );
     }
