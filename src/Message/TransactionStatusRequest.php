@@ -3,7 +3,6 @@
 namespace Omnipay\IcepayPayments\Message;
 
 use Omnipay\Common\Message\ResponseInterface;
-use Omnipay\IcepayPayments\Exception\PostBackException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
