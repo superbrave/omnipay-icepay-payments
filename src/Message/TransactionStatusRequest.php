@@ -64,11 +64,11 @@ class TransactionStatusRequest extends AbstractRequest
      *
      * @see http://docs2.icepay.com/payment-process/handling-the-postback/postback-sample/
      *
-     * @return TransactionStatusResponse|bool False when the data is is not sent or not correct.
+     * @return TransactionStatusResponse|bool false when the data is is not sent or not correct
      *
      * @throws PostBackException by call to self::validateSecurityHashMatch()
      */
-    private function getTransactionStatusFromPostBack(): ?TransactionStatusResponse
+    private function getTransactionStatusFromPostBack()
     {
         if (stripos($this->httpRequest->getContentType(), 'json') === false) {
             return false;
@@ -76,7 +76,7 @@ class TransactionStatusRequest extends AbstractRequest
 
         try {
             $contentAsArray = json_decode($this->httpRequest->getContent(), true);
-        } catch(\LogicException $exception) {
+        } catch (\LogicException $exception) {
             return false;
         }
 
@@ -112,12 +112,6 @@ class TransactionStatusRequest extends AbstractRequest
      */
     private function validateSecurityHashMatch(Request $request, $contentAsArray): bool
     {
-        $generatedSecurityHash = $this->getSecurityHash(
-            Request::METHOD_POST,
-            $request->getPathInfo(),
-            $contentAsArray
-        );
-
         $sentSecurityHash = $request->headers->get('checksum');
 
         $possibleHashes = $this->getPossibleValidHashes($request, $contentAsArray);
@@ -130,9 +124,9 @@ class TransactionStatusRequest extends AbstractRequest
 
         throw new PostBackException(
             sprintf(
-                'Sent security hash %s did not match generated hash %s',
+                'Sent security hash %s did not match generated hashes: %s',
                 $sentSecurityHash,
-                $generatedSecurityHash
+                implode(', ', $possibleHashes)
             )
         );
     }
@@ -149,8 +143,8 @@ class TransactionStatusRequest extends AbstractRequest
     private function getPossibleValidHashes(Request $request, $contentAsArray): array
     {
         $notifyUrls = [
-            $request->getSchemeAndHttpHost() . $request->getRequestUri(),
-            $request->getSchemeAndHttpHost() . $request->getRequestUri() . '/',
+            $request->getSchemeAndHttpHost().$request->getRequestUri(),
+            $request->getSchemeAndHttpHost().$request->getRequestUri().'/',
         ];
 
         $hashes = [];
