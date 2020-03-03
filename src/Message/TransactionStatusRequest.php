@@ -70,14 +70,12 @@ class TransactionStatusRequest extends AbstractRequest
      */
     private function getTransactionStatusFromPostBack(): ?TransactionStatusResponse
     {
-        $request = Request::createFromGlobals();
-
-        if (stripos($request->getContentType(), 'json') === false) {
+        if (stripos($this->httpRequest->getContentType(), 'json') === false) {
             return false;
         }
 
         try {
-            $contentAsArray = json_decode($request->getContent(), true);
+            $contentAsArray = json_decode($this->httpRequest->getContent(), true);
         } catch(\LogicException $exception) {
             return false;
         }
@@ -86,7 +84,7 @@ class TransactionStatusRequest extends AbstractRequest
             return false;
         }
 
-        $this->validateSecurityHashMatch($request, $contentAsArray);
+        $this->validateSecurityHashMatch($this->httpRequest, $contentAsArray);
 
         $camelCasedKeysContent = array_combine(
             array_map('lcfirst', array_keys($contentAsArray)),
