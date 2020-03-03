@@ -95,8 +95,7 @@ class TransactionStatusRequest extends AbstractRequest
 
     /**
      * Get the security hash from the request and match it against a generated hash from the sent values.
-     * Will throw an exception if it does not match.
-     * Needs the POSTed Json as a php array.
+     * Needs the POSTed JSON as stdClass.
      *
      * @param Request   $request
      * @param \stdClass $contentAsStdObj
