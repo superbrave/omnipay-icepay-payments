@@ -77,6 +77,12 @@ class TransactionStatusRequest extends AbstractRequest
 
         $this->setContractProfileId($contentAsStdObj->ContractProfileId);
 
+        // Make sure we're updating the correct payment by reference, and not all of them.
+        // Note: $contentAsArray['Reference'] is not the same as TransactionReference.
+        if ($this->getTransactionReference() !== trim($contentAsArray['TransactionId'])) {
+            return null;
+        }
+
         if ($this->validateSecurityHashMatch($this->httpRequest, $contentAsStdObj) === false) {
             return null;
         }
