@@ -320,4 +320,136 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     {
         return $this->setParameter('timestamp', $timestamp);
     }
+
+    /**
+     * Get the address street name.
+     *
+     * @return string
+     */
+    public function getAddressStreet(): string
+    {
+        return $this->getParameter('addressStreet');
+    }
+
+    /**
+     * Sets the address street name as string value.
+     *
+     * @param string $addressStreet
+     *
+     * @return self
+     */
+    public function setAddressStreet(string $addressStreet): self
+    {
+        return $this->setParameter('addressStreet', $addressStreet);
+    }
+
+    /**
+     * Get the address house number.
+     *
+     * @return string
+     */
+    public function getAddressHouseNumber(): string
+    {
+        return $this->getParameter('addressHouseNumber');
+    }
+
+    /**
+     * Sets the address house number as string value.
+     * 
+     * @param string $addressHouseNumber
+     * 
+     * @return self
+     */
+    public function setAddressHouseNumber(string $addressHouseNumber): self
+    {
+        return $this->setParameter('addressHouseNumber', $addressHouseNumber);
+    }
+
+    /**
+     * Get the address postal code.
+     *
+     * @return string
+     */
+    public function getAddressPostalCode(): string
+    {
+        return $this->getParameter('addressPostalCode');
+    }
+
+    /**
+     * Sets the address postal code as string value.
+     *
+     * @param string $addressPostalCode
+     *
+     * @return self
+     */
+    public function setAddressPostalCode(string $addressPostalCode): self
+    {
+        return $this->setParameter('addressPostalCode', $addressPostalCode);
+    }
+
+    /**
+     * Get the address city.
+     *
+     * @return string
+     */
+    public function getAddressCity(): string
+    {
+        return $this->getParameter('addressCity');
+    }
+
+    /**
+     * Sets the address city as string value.
+     *
+     * @param string $addressCity
+     *
+     * @return self
+     */
+    public function setAddressCity(string $addressCity): self
+    {
+        return $this->setParameter('addressCity', $addressCity);
+    }
+
+    /**
+     * Get the phone number.
+     *
+     * @return string
+     */
+    public function getPhoneNumber(): string
+    {
+        return $this->getParameter('phoneNumber');
+    }
+
+    /**
+     * Sets the phone number as string value.
+     *
+     * @param string $phoneNumber
+     *
+     * @return self
+     */
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        return $this->setParameter('phoneNumber', $phoneNumber);
+    }
+
+    /**
+     * Get the email address.
+     *
+     * @return string
+     */
+    public function getEmailAddress(): string
+    {
+        return $this->getParameter('emailAddress');
+    }
+
+    /**
+     * Sets the email address as string value.
+     *
+     * @param string $emailAddress
+     *
+     * @return self
+     */
+    public function setEmailAddress(string $emailAddress): self
+    {
+        return $this->setParameter('emailAddress', $emailAddress);
+    }
 }

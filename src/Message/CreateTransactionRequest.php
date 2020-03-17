@@ -48,6 +48,17 @@ class CreateTransactionRequest extends AbstractRequest
                 'LanguageCode' => $this->getLanguageCode(),
                 'CountryCode' => $this->getCountryCode(),
                 'Reference' => $this->getTransactionId(),
+                'Consumer' => [
+                    'Address' => [
+                        'Street' => $this->getAddressStreet(),
+                        'HouseNumber' => $this->getAddressHouseNumber(),
+                        'PostalCode' => $this->getAddressPostalCode(),
+                        'City' => $this->getAddressCity(),
+                        'CountryCode' => $this->getCountryCode(),
+                    ],
+                    'Phone' => $this->getPhoneNumber(),
+                    'Email' => $this->getEmailAddress(),
+                ],
                 'Order' => [
                     'OrderNumber' => $this->getReference(),
                     'CurrencyCode' => $this->getCurrencyCode(),
