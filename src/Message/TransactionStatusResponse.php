@@ -50,6 +50,6 @@ class TransactionStatusResponse extends AbstractResponse
      */
     public function getTransactionReference(): ?string
     {
-        return $this->request->getTransactionReference();
+        return isset($this->data['id']) ? $this->data['id'] : $this->request->getTransactionReference();
     }
 }
