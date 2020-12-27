@@ -32,6 +32,9 @@
     "config": {
         "bin-dir": "bin"
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "require": {
         "php": "^7.2.9",
         "ext-json": "*",

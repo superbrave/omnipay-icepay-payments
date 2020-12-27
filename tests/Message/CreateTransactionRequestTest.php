@@ -78,6 +78,12 @@ class CreateTransactionRequestTest extends AbstractTestCase
                 'IssuerCode' => 'ABNAMRO',
                 'AmountInCents' => 1337,
                 'CurrencyCode' => 'EUR',
+                'Consumer' => [
+                    'Category' => 'Person',
+                ],
+                'DeliveryConsumer' => [
+                    'Category' => 'Person',
+                ],
                 'Timestamp' => '2019-03-09T12:00:00Z',
                 'LanguageCode' => 'nl',
                 'CountryCode' => 'NL',
