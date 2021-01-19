@@ -31,9 +31,9 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      * Send the request to the API of the Payment Service Provider.
      * The base url and the authentication headers are automatically added.
      *
-     * @param string      $method
-     * @param string      $urlPath
-     * @param array|null  $data
+     * @param string     $method
+     * @param string     $urlPath
+     * @param array|null $data
      *
      * @return ResponseInterface
      */
