@@ -32,6 +32,14 @@ class TransactionStatusResponse extends AbstractResponse
     /**
      * {@inheritdoc}
      */
+    public function getCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isSuccessful(): bool
     {
         return $this->statusCode === 200;
