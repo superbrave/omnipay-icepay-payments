@@ -34,7 +34,7 @@ class TransactionStatusRequest extends AbstractRequest
         }
 
         $this->sendRequest(
-            Request::METHOD_POST,
+            Request::METHOD_GET,
             sprintf(
                 '/transaction/%s',
                 $this->getTransactionReference()

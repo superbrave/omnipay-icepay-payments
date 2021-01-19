@@ -29,7 +29,7 @@ class CompleteAuthoriseAndCaptureRequest extends AbstractRequest
     public function sendData($data): ResponseInterface
     {
         $this->sendRequest(
-            Request::METHOD_POST,
+            Request::METHOD_GET,
             sprintf(
                 '/transaction/%s',
                 $this->getTransactionReference()

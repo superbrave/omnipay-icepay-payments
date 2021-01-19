@@ -59,7 +59,7 @@ class TransactionStatusRequestTest extends AbstractTestCase
         $this->assertInstanceOf(TransactionStatusResponse::class, $response);
 
         $expectedRequest = new Request(
-            SymfonyRequest::METHOD_POST,
+            SymfonyRequest::METHOD_GET,
             'https://www.superbrave.nl/transaction/e7ca29c8-f1f4-4a4c-a968-0f9667d0519d'
         );
 
