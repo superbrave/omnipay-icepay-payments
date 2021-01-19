@@ -38,8 +38,7 @@ class TransactionStatusRequest extends AbstractRequest
             sprintf(
                 '/transaction/%s',
                 $this->getTransactionReference()
-            ),
-            $data
+            )
         );
 
         return new TransactionStatusResponse(

@@ -31,13 +31,13 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      * Send the request to the API of the Payment Service Provider.
      * The base url and the authentication headers are automatically added.
      *
-     * @param string $method
-     * @param string $urlPath
-     * @param array  $data
+     * @param string      $method
+     * @param string      $urlPath
+     * @param array|null  $data
      *
      * @return ResponseInterface
      */
-    protected function sendRequest(string $method, string $urlPath, array $data): ResponseInterface
+    protected function sendRequest(string $method, string $urlPath, ?array $data = null): ResponseInterface
     {
         $securityHash = $this->getSecurityHash($method, $urlPath, $data);
         $headers = $this->getAuthenticationHeaders($securityHash);
@@ -76,10 +76,10 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     /**
      * Safety hash from icepay, to be generated after putting in all the data.
      *
-     * @param string          $requestMethod
-     * @param string          $urlPath
-     * @param array|\stdClass $data
-     * @param bool            $urlIsFullUrl  = false. True to have $urlPath be the absolute (full) url
+     * @param string               $requestMethod
+     * @param string               $urlPath
+     * @param array|\stdClass|null $data
+     * @param bool                 $urlIsFullUrl  = false. True to have $urlPath be the absolute (full) url
      *
      * @return string
      */
@@ -96,7 +96,10 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
             $fullUrl = $urlPath;
         }
 
-        $toBeHashed = $fullUrl.$requestMethod.$contractProfileId.json_encode($data);
+        $toBeHashed = $fullUrl.$requestMethod.$contractProfileId;
+        if ($data !== null) {
+            $toBeHashed .= json_encode($data);
+        }
 
         $hash = hash_hmac(
             'sha256',
