@@ -109,7 +109,7 @@ $request = $gateway->fetchTransaction($data);
 $response = $request->send();
 ```
 
-[API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction)
+[API documentation](https://documentation.icepay.com/api/#operation/Get%20Transaction)
 
 ### Refund
 *Do note: refunds implementation has not been tested.*
@@ -127,7 +127,7 @@ $request = $gateway->refund($data);
 $response = $request->send();
 ```
 
-[API documentation](https://icepay2.docs.apiary.io/#reference/0/transaction/refund)
+[API documentation](https://documentation.icepay.com/api/#operation/Refund)
 
 ## License
 
