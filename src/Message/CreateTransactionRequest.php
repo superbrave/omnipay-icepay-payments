@@ -44,6 +44,12 @@ class CreateTransactionRequest extends AbstractRequest
                 'IssuerCode' => $this->getIssuerCode(),
                 'AmountInCents' => $this->getAmountInteger(),
                 'CurrencyCode' => $this->getCurrencyCode(),
+                'Consumer' => [
+                    'Category' => 'Person',
+                ],
+                'DeliveryConsumer' => [
+                    'Category' => 'Person',
+                ],
                 'Timestamp' => $this->getTimestamp()->format(self::TIMESTAMP_FORMAT),
                 'LanguageCode' => $this->getLanguageCode(),
                 'CountryCode' => $this->getCountryCode(),
