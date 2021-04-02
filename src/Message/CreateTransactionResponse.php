@@ -27,7 +27,7 @@ class CreateTransactionResponse extends AbstractResponse
      */
     public function getRedirectUrl(): string
     {
-        return $this->data['acquirerRequestUri'];
+        return $this->data['acquirerRequestUri'] ?? '';
     }
 
     /**

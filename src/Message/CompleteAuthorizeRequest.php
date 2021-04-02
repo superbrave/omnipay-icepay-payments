@@ -25,7 +25,7 @@ class CompleteAuthorizeRequest extends AbstractRequest
         return new CompleteAuthorizeResponse(
             $this,
             $response->getStatusCode(),
-            $this->getResponseBody($response),
+            $this->getResponseBody($response)
         );
     }
 

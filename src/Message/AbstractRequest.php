@@ -260,11 +260,12 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
      */
     protected function getResponseBody(ResponseInterface $response): array
     {
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode($response->getBody()->getContents(), true) ?? [];
     }
 
     /**
      * Create a checksum based on the request method, path, secret and data.
+     *
      * @see https://documentation.icepay.com/payments/checksum/
      *
      * @param string     $requestUrl    full request url to the API endpoint
