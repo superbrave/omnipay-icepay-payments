@@ -7,6 +7,7 @@ namespace Omnipay\IcepayPayments\Message;
 use DateTimeInterface;
 use Omnipay\Common\Message\AbstractRequest as OmnipayAbstractRequest;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractRequest extends OmnipayAbstractRequest
 {
@@ -223,6 +224,18 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     public function setTimestamp(DateTimeInterface $timestamp): self
     {
         return $this->setParameter('timestamp', $timestamp);
+    }
+
+    /**
+     * Return the Symfony HttpRequest.
+     *
+     * @see AbstractRequest::$httpClient
+     *
+     * @return Request
+     */
+    public function getHttpRequest(): Request
+    {
+        return $this->httpRequest;
     }
 
     /**

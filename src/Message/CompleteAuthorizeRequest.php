@@ -28,16 +28,4 @@ class CompleteAuthorizeRequest extends AbstractRequest
             $this->getResponseBody($response)
         );
     }
-
-    /**
-     * Return the Symfony HttpRequest.
-     *
-     * @see AbstractRequest::$httpClient
-     *
-     * @return Request
-     */
-    public function getHttpRequest(): Request
-    {
-        return $this->httpRequest;
-    }
 }
