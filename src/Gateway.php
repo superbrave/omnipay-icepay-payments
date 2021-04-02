@@ -7,7 +7,6 @@ namespace Omnipay\IcepayPayments;
 use DateTimeImmutable;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
-use Omnipay\IcepayPayments\Message\CaptureRequest;
 use Omnipay\IcepayPayments\Message\CompleteAuthorizeRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\FetchTransactionRequest;
@@ -71,7 +70,7 @@ class Gateway extends AbstractGateway
      */
     public function capture(array $parameters = []): RequestInterface
     {
-        return $this->createRequest(CaptureRequest::class, $parameters);
+        return $this->createRequest(CompleteAuthorizeRequest::class, $parameters);
     }
 
     /**
