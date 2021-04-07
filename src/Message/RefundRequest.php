@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Message;
 
-use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * The request for refunding at Icepay.
+ * Do note: refunds implementation has not been tested.
  */
 class RefundRequest extends AbstractRequest
 {
@@ -16,32 +17,26 @@ class RefundRequest extends AbstractRequest
      */
     public function getData(): array
     {
-        $data = parent::getData();
-
-        $data['ContractProfileId'] = $this->getContractProfileId();
-        $data['AmountInCents'] = $this->getAmountInteger();
-        $data['CurrencyCode'] = $this->getCurrencyCode();
-        $data['Reference'] = $this->getReference(); // This isn't the payment reference but needs to be unique among refunds.
-        $data['Timestamp'] = $this->getTimestamp()->format(self::TIMESTAMP_FORMAT);
-
-        return $data;
+        return [
+            'ContractProfileId' => $this->getContractProfileId(),
+            'AmountInCents' => $this->getAmountInteger(),
+            'CurrencyCode' => $this->getCurrencyCode(),
+            'Reference' => $this->getTransactionId(),
+            'Timestamp' => $this->getTimestamp(),
+        ];
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws InvalidRequestException when transaction reference is not set
+     * @see https://documentation.icepay.com/api/#operation/Refund
      */
     public function sendData($data): ResponseInterface
     {
-        if (empty($this->getTransactionReference())) {
-            throw new InvalidRequestException('Transaction reference missing for refund request.');
-        }
-
-        $this->sendRequest(
+        $response = $this->sendRequest(
             Request::METHOD_POST,
             sprintf(
-                '/transaction/%s/refund',
+                '/api/transaction/%s/refund',
                 $this->getTransactionReference()
             ),
             $data
@@ -49,7 +44,7 @@ class RefundRequest extends AbstractRequest
 
         return new RefundResponse(
             $this,
-            $this->getResponseBody()
+            $this->getResponseBody($response)
         );
     }
 }

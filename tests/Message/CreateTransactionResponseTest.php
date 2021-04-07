@@ -1,107 +1,109 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Tests\Message;
 
-use Omnipay\IcepayPayments\Message\AbstractResponse;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionResponse;
 use Omnipay\IcepayPayments\Tests\AbstractTestCase;
 
-/**
- * Class CreateTransactionResponseTest.
- */
 class CreateTransactionResponseTest extends AbstractTestCase
 {
     /**
      * @var CreateTransactionRequest
      */
-    private $request;
+    private $createTransactionRequest;
 
     /**
-     * Creates a new CreateTransactionRequest instance.
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->request = new CreateTransactionRequest($this->httpClient, $this->httpRequest);
+        $this->createTransactionRequest = new CreateTransactionRequest($this->httpClient, $this->httpRequest);
     }
 
     /**
-     * Tests if CreateTransactionResponse::isSuccessful will return true with the given json response.
+     * Tests if {@see CreateTransactionResponse::isSuccessful()} will return true with the given json success response.
      */
-    public function testIfResponseReturnsSuccessful(): void
+    public function testCreatedTransactionResponseIsSuccessful(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionSuccess.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
-
-        $expectedResponseBody = [
-            'contractId' => '0332ca56-90eb-4859-8d42-2c0898214069',
-            'transactionId' => '6e9096aa-7ab8-4cb6-83f6-2f4847e5608a',
-            'transactionStatusCode' => AbstractResponse::RESPONSE_STATUS_STARTED,
-            'transactionStatusDetails' => '',
-            'acquirerRequestUri' => 'https://www.superbrave.nl/redirect-url',
-            'acquirerTransactionId' => '12345678',
-        ];
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseSuccess.json'), true)
+        );
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertSame($expectedResponseBody, $response->getData());
     }
 
     /**
-     * Tests if CreateTransactionResponse::isSuccessful will return false from the json response.
+     * Tests if {@see CreateTransactionResponse::isRedirect()} will return true with the given json success response.
      */
-    public function testIfResponseReturnNotSuccessful(): void
+    public function testCreatedTransactionResponseWillRedirect(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
-
-        $this->assertFalse($response->isSuccessful());
-    }
-
-    /**
-     * Tests if CreateTransactionResponse::isCancelled will return true from the json response.
-     */
-    public function testIfResponseIsCancelled(): void
-    {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionCancelled.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
-
-        $this->assertTrue($response->isCancelled());
-    }
-
-    /**
-     * Tests if CreateTransactionResponse::isCancelled will return true when we cannot create a transaction at Icepay.
-     */
-    public function testsIfResponseIsFailed(): void
-    {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
-
-        $this->assertTrue($response->isCancelled());
-    }
-
-    /**
-     * Tests if CreateTransactionResponse::isRedirect will return true from the json response.
-     */
-    public function testIfResponseIsARedirect(): void
-    {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionSuccess.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseSuccess.json'), true)
+        );
 
         $this->assertTrue($response->isRedirect());
-        $this->assertSame('https://www.superbrave.nl/redirect-url', $response->getRedirectUrl());
     }
 
     /**
-     * Tests if CreateTransactionResponse::isRedirect will return false from the json response.
+     * Tests if {@see CreateTransactionResponse::getRedirectUrl()} will return a redirect url with the given json
+     * success response.
      */
-    public function testIfResponseIsNotARedirect(): void
+    public function testCreatedTransactionResponseWillReturnRedirectUrl(): void
     {
-        $responseJsonBody = file_get_contents(__DIR__.'/../Mocks/CreateTransactionFailed.json');
-        $response = new CreateTransactionResponse($this->request, json_decode($responseJsonBody, true));
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseSuccess.json'), true)
+        );
 
-        $this->assertFalse($response->isRedirect());
-        $this->assertEmpty($response->getRedirectUrl());
+        $this->assertSame(
+            'https://acc-interconnect.icepay.com/iscreditcard/api/payments/creditcard/ab4e4929-eb89-4886-8903-acfe009e1e0f',
+            $response->getRedirectUrl()
+        );
+    }
+
+    /**
+     * Tests if {@see CreateTransactionResponse::isSuccessful()} will return false with the given json failed response.
+     */
+    public function testFailedCreatedTransactionResponseIsNotSuccessful(): void
+    {
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseFailed.json'), true)
+        );
+
+        $this->assertNotTrue($response->isSuccessful());
+    }
+
+    /**
+     * Tests if {@see CreateTransactionResponse::isRedirect()} will return false with the given json failed response.
+     */
+    public function testFailedCreatedTransactionResponseIsARedirect(): void
+    {
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseFailed.json'), true)
+        );
+
+        $this->assertNotTrue($response->isRedirect());
+    }
+
+    /**
+     * Tests if {@see CreateTransactionResponse::getRedirectUrl()} will return empty with the given json failed response.
+     */
+    public function testFailedCreatedTransactionResponseWillReturnEmptyRedirectUrl(): void
+    {
+        $response = new CreateTransactionResponse(
+            $this->createTransactionRequest,
+            json_decode(file_get_contents(__DIR__.'/../Mock/CreateTransactionResponseFailed.json'), true)
+        );
+
+        $this->assertNotTrue($response->getRedirectUrl());
     }
 }

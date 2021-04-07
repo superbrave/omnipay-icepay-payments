@@ -1,0 +1,80 @@
+{
+    "id": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+    "lastUpdatedUtc": "2021-04-02T12:56:57.967",
+    "contractProfileId": "B4980F36-K45K-4DBF-BF6E-DG3941B2TG83",
+    "authorisationId": "00000000-0000-0000-0000-000000000000",
+    "paymentMethod": "CREDITCARD",
+    "issuer": "CREDITCARD",
+    "acquirer": "CC_PAYVISION",
+    "currencyCode": "EUR",
+    "amount": 99.99,
+    "reference": "5735c396-340f-4326-a71f-14910b146c7b",
+    "status": "CANCELLED",
+    "requestTimestamp": "2021-04-02T12:56:54.087",
+    "acquirerId": "a61a6e41-8d38-4899-b721-a80b00addc4c",
+    "providerTransactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+    "paymentDetails": [],
+    "languageCode": "en",
+    "description": "Payment for order #1354368",
+    "countryCode": "NL",
+    "events": [
+        {
+            "type": "TransactionInitiated",
+            "dateTime": "2021-04-02T12:56:54.0859726Z"
+        },
+        {
+            "type": "TransactionStarted",
+            "dateTime": "2021-04-02T12:56:54.4599439Z"
+        },
+        {
+            "type": "TransactionCancelled",
+            "dateTime": "2021-04-02T12:56:57.9666001Z"
+        }
+    ],
+    "refunds": [],
+    "isRefundable": false,
+    "feedbacks": [
+        {
+            "transactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+            "requestTimeUtc": "2021-04-02T12:56:59.377",
+            "isSuccessful": false,
+            "paymentMethod": "CREDITCARD",
+            "failureReason": ": HostNotFound",
+            "contractProfileId": "B4980F36-K45K-4DBF-BF6E-DG3941B2TG83",
+            "url": "http:\/\/www.superbrave.nl\/api\/notify\/693f049e-2253-4c6b-9bb9-9b370c86c85e\/83018854-a69a-4b00-aa9c-6187e6525d96",
+            "feedbackContent": "{\"FeedbackType\":\"Transaction\",\"ContractProfileId\":\"B4980F36-K45K-4DBF-BF6E-DG3941B2TG83\",\"TransactionId\":\"ab4e4929-eb89-4886-8903-acfe009e1e0f\",\"Reference\":\"5735c396-340f-4326-a71f-14910b146c7b\",\"StatusCode\":\"CANCELLED\",\"StatusDetails\":\"\",\"Amount\":9999,\"CurrencyCode\":\"EUR\",\"PaymentMethodCode\":\"CREDITCARD\",\"PaymentDetails\":{}}",
+            "responseContent": "",
+            "retryCount": 0,
+            "responseStatusCode": 0,
+            "contractProfile": "Contract Profile #1 (23311)"
+        },
+        {
+            "transactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+            "requestTimeUtc": "2021-04-02T12:57:04.667",
+            "isSuccessful": false,
+            "paymentMethod": "CREDITCARD",
+            "failureReason": ": HostNotFound",
+            "contractProfileId": "B4980F36-K45K-4DBF-BF6E-DG3941B2TG83",
+            "url": "http:\/\/www.superbrave.nl\/api\/notify\/693f049e-2253-4c6b-9bb9-9b370c86c85e\/83018854-a69a-4b00-aa9c-6187e6525d96",
+            "feedbackContent": "{\"FeedbackType\":\"Transaction\",\"ContractProfileId\":\"B4980F36-K45K-4DBF-BF6E-DG3941B2TG83\",\"TransactionId\":\"ab4e4929-eb89-4886-8903-acfe009e1e0f\",\"Reference\":\"5735c396-340f-4326-a71f-14910b146c7b\",\"StatusCode\":\"CANCELLED\",\"StatusDetails\":\"\",\"Amount\":9999,\"CurrencyCode\":\"EUR\",\"PaymentMethodCode\":\"CREDITCARD\",\"PaymentDetails\":{}}",
+            "responseContent": "",
+            "retryCount": 2,
+            "responseStatusCode": 0,
+            "contractProfile": "Contract Profile #1 (23311)"
+        },
+        {
+            "transactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+            "requestTimeUtc": "2021-04-02T12:57:01.297",
+            "isSuccessful": false,
+            "paymentMethod": "CREDITCARD",
+            "failureReason": ": HostNotFound",
+            "contractProfileId": "B4980F36-K45K-4DBF-BF6E-DG3941B2TG83",
+            "url": "http:\/\/www.superbrave.nl\/api\/notify\/693f049e-2253-4c6b-9bb9-9b370c86c85e\/83018854-a69a-4b00-aa9c-6187e6525d96",
+            "feedbackContent": "{\"FeedbackType\":\"Transaction\",\"ContractProfileId\":\"B4980F36-K45K-4DBF-BF6E-DG3941B2TG83\",\"TransactionId\":\"ab4e4929-eb89-4886-8903-acfe009e1e0f\",\"Reference\":\"5735c396-340f-4326-a71f-14910b146c7b\",\"StatusCode\":\"CANCELLED\",\"StatusDetails\":\"\",\"Amount\":9999,\"CurrencyCode\":\"EUR\",\"PaymentMethodCode\":\"CREDITCARD\",\"PaymentDetails\":{}}",
+            "responseContent": "",
+            "retryCount": 1,
+            "responseStatusCode": 0,
+            "contractProfile": "Contract Profile #1 (23311)"
+        }
+    ]
+}

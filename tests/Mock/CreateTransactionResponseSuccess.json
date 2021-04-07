@@ -1,0 +1,8 @@
+{
+    "contractId": "11c5a008-fe12-4ce6-a324-acfe009e1cab",
+    "transactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f",
+    "transactionStatusCode": "STARTED",
+    "transactionStatusDetails": "",
+    "acquirerRequestUri": "https://acc-interconnect.icepay.com/iscreditcard/api/payments/creditcard/ab4e4929-eb89-4886-8903-acfe009e1e0f",
+    "acquirerTransactionId": "ab4e4929-eb89-4886-8903-acfe009e1e0f"
+}

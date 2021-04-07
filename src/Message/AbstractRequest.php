@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Message;
 
 use DateTimeInterface;
@@ -7,12 +9,11 @@ use Omnipay\Common\Message\AbstractRequest as OmnipayAbstractRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class AbstractRequest.
- */
 abstract class AbstractRequest extends OmnipayAbstractRequest
 {
     /**
+     * Timestamp format according Icepay documentation.
+     *
      * @var string
      */
     public const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s\Z';
@@ -28,106 +29,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Send the request to the API of the Payment Service Provider.
-     * The base url and the authentication headers are automatically added.
-     *
-     * @param string     $method
-     * @param string     $urlPath
-     * @param array|null $data
-     *
-     * @return ResponseInterface
-     */
-    protected function sendRequest(string $method, string $urlPath, ?array $data = null): ResponseInterface
-    {
-        $securityHash = $this->getSecurityHash($method, $urlPath, $data);
-        $headers = $this->getAuthenticationHeaders($securityHash);
-        $body = null;
-
-        if ($method === Request::METHOD_POST) {
-            $headers['Content-Type'] = 'application/json';
-            $body = json_encode($data);
-        }
-
-        $this->response = $this->httpClient->request(
-            $method,
-            $this->getBaseUrl().$urlPath,
-            $headers,
-            $body
-        );
-
-        return $this->response;
-    }
-
-    /**
-     * Returns the JSON decoded response body.
-     *
-     * @return array
-     */
-    protected function getResponseBody(): array
-    {
-        $responseBody = json_decode($this->getResponse()->getBody()->getContents(), true);
-        if (is_array($responseBody) === false) {
-            $responseBody = [];
-        }
-
-        return $responseBody;
-    }
-
-    /**
-     * Safety hash from icepay, to be generated after putting in all the data.
-     *
-     * @param string               $requestMethod
-     * @param string               $urlPath
-     * @param array|\stdClass|null $data
-     * @param bool                 $urlIsFullUrl  = false. True to have $urlPath be the absolute (full) url
-     *
-     * @return string
-     */
-    protected function getSecurityHash(
-        string $requestMethod,
-        string $urlPath,
-        $data,
-        bool $urlIsFullUrl = false
-    ): string {
-        $contractProfileId = $this->getContractProfileId();
-
-        $fullUrl = $this->getBaseUrl().$urlPath;
-        if ($urlIsFullUrl) {
-            $fullUrl = $urlPath;
-        }
-
-        $toBeHashed = $fullUrl.$requestMethod.$contractProfileId;
-        if ($data !== null) {
-            $toBeHashed .= json_encode($data);
-        }
-
-        $hash = hash_hmac(
-            'sha256',
-            $toBeHashed,
-            base64_decode($this->getSecretKey()),
-            true
-        );
-
-        return base64_encode($hash);
-    }
-
-    /**
-     * Get the authentication headers information.
-     *
-     * @param string $securityHash
-     *
-     * @return array
-     */
-    private function getAuthenticationHeaders(string $securityHash): array
-    {
-        return [
-            'CHECKSUM' => $securityHash,
-            'USERID' => $this->getContractProfileId(),
-        ];
-    }
-
-    /**
-     * Returns the base URL of the API.
+     * Get the base URL of the API.
      *
      * @return string
      */
@@ -137,7 +39,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the base URL of the API.
+     * Set the base URL of the API.
      *
      * @param string $baseUrl
      *
@@ -149,9 +51,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Get Contract Profile Id (also known as the user id).
-     *
-     * Use the Contract Profile Id assigned by Allied wallet.
+     * Get the ContractProfileId (also known as the UserId).
      *
      * @return string
      */
@@ -161,7 +61,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Set Contract Profile Id (also known as the user id).
+     * Set the ContractProfileId (also known as the UserId).
      *
      * @param string $contractProfileId
      *
@@ -183,13 +83,13 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Set Secret Key.
+     * Set the Secret Key.
      *
      * @param string $secretKey
      *
      * @return self
      */
-    public function setSecretKey($secretKey): self
+    public function setSecretKey(string $secretKey): self
     {
         return $this->setParameter('secretKey', $secretKey);
     }
@@ -227,7 +127,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the country code.
+     * Set the country code.
      *
      * @param string $countryCode
      *
@@ -239,6 +139,8 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
+     * Get the issuer code.
+     *
      * @return string
      */
     public function getIssuerCode(): string
@@ -247,7 +149,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the issuerCode.
+     * Set the issuer code.
      *
      * @param string $issuerCode
      *
@@ -269,7 +171,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the language code.
+     * Set the language code.
      *
      * @param string $languageCode
      *
@@ -291,7 +193,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the reference.
+     * Set the reference.
      *
      * @param string $reference
      *
@@ -313,7 +215,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     }
 
     /**
-     * Sets the timestamp as string value.
+     * Set the timestamp as string value.
      *
      * @param DateTimeInterface $timestamp
      *
@@ -322,5 +224,100 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     public function setTimestamp(DateTimeInterface $timestamp): self
     {
         return $this->setParameter('timestamp', $timestamp);
+    }
+
+    /**
+     * Return the Symfony HttpRequest.
+     *
+     * @see AbstractRequest::$httpClient
+     *
+     * @return Request
+     */
+    public function getHttpRequest(): Request
+    {
+        return $this->httpRequest;
+    }
+
+    /**
+     * Send the request to the API of the payment service provider.
+     *
+     * @param string     $requestMethod
+     * @param string     $requestPath
+     * @param array|null $data
+     *
+     * @return ResponseInterface
+     */
+    protected function sendRequest(string $requestMethod, string $requestPath, ?array $data = null): ResponseInterface
+    {
+        $requestUrl = sprintf('%s%s', $this->getBaseUrl(), $requestPath);
+        $requestHeaders = $this->getAuthenticationHeaders(
+            $this->createChecksum($requestUrl, $requestMethod, $data)
+        );
+
+        $response = $this->httpClient->request(
+            $requestMethod,
+            $requestUrl,
+            $requestHeaders,
+            json_encode($data)
+        );
+
+        return $response;
+    }
+
+    /**
+     * Get the json response data from the request.
+     *
+     * @param ResponseInterface $response
+     *
+     * @return array
+     */
+    protected function getResponseBody(ResponseInterface $response): array
+    {
+        return json_decode($response->getBody()->getContents(), true) ?? [];
+    }
+
+    /**
+     * Create a checksum based on the request method, path, secret and data.
+     *
+     * @see https://documentation.icepay.com/payments/checksum/
+     *
+     * @param string     $requestUrl    full request url to the API endpoint
+     * @param string     $requestMethod Request method e.g. POST or GET
+     * @param array|null $data
+     *
+     * @return string
+     */
+    private function createChecksum(string $requestUrl, string $requestMethod, array $data = null): string
+    {
+        return base64_encode(
+            hash_hmac(
+                'sha256',
+                sprintf(
+                    '%s%s%s%s',
+                    $requestUrl,
+                    $requestMethod,
+                    $this->getContractProfileId(),
+                    json_encode($data)
+                ),
+                base64_decode($this->getSecretKey()),
+                true
+            )
+        );
+    }
+
+    /**
+     * Get the authentication headers information.
+     *
+     * @param string $checksum
+     *
+     * @return array
+     */
+    private function getAuthenticationHeaders(string $checksum): array
+    {
+        return [
+            'Content-Type' => 'application/json',
+            'ContractProfileId' => $this->getContractProfileId(),
+            'CHECKSUM' => $checksum,
+        ];
     }
 }

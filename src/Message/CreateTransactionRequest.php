@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Message;
 
 use Omnipay\Common\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * The request for creating a transaction at Icepay.
- */
 class CreateTransactionRequest extends AbstractRequest
 {
     /**
@@ -16,28 +15,16 @@ class CreateTransactionRequest extends AbstractRequest
     public function getData(): array
     {
         $parentData = parent::getData();
-
         $data = [
+            'ConsumerFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
             'Contract' => [
                 'ContractProfileId' => $this->getContractProfileId(),
                 'AmountInCents' => $this->getAmountInteger(),
                 'CurrencyCode' => $this->getCurrencyCode(),
                 'Reference' => $this->getTransactionId(),
-            ],
-            'Postback' => [
-                'UrlCompleted' => $this->getReturnUrl(),
-                'UrlError' => $this->getCancelUrl(),
-                'UrlsNotify' => [
-                    $this->getNotifyUrl(),
-                ],
-            ],
-            'IntegratorFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
-            ],
-            'ConsumerFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
             ],
             'Fulfillment' => [
                 'PaymentMethod' => $this->getPaymentMethod(),
@@ -48,13 +35,18 @@ class CreateTransactionRequest extends AbstractRequest
                 'LanguageCode' => $this->getLanguageCode(),
                 'CountryCode' => $this->getCountryCode(),
                 'Reference' => $this->getTransactionId(),
-                'Order' => [
-                    'OrderNumber' => $this->getReference(),
-                    'CurrencyCode' => $this->getCurrencyCode(),
-                    'TotalGrossAmountCents' => $this->getAmountInteger(),
-                    'TotalNetAmountCents' => $this->getAmountInteger(),
-                ],
                 'Description' => $this->getDescription(),
+            ],
+            'IntegratorFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
+            'Postback' => [
+                'UrlCompleted' => $this->getReturnUrl(),
+                'UrlError' => $this->getCancelUrl(),
+                'UrlsNotify' => [
+                    $this->getNotifyUrl(),
+                ],
             ],
         ];
 
@@ -63,18 +55,20 @@ class CreateTransactionRequest extends AbstractRequest
 
     /**
      * {@inheritdoc}
+     *
+     * @see https://documentation.icepay.com/api/#operation/Transaction
      */
     public function sendData($data): ResponseInterface
     {
-        $this->sendRequest(
+        $response = $this->sendRequest(
             Request::METHOD_POST,
-            '/contract/transaction',
+            '/api/contract/transaction',
             $data
         );
 
         return new CreateTransactionResponse(
             $this,
-            $this->getResponseBody()
+            $this->getResponseBody($response)
         );
     }
 }

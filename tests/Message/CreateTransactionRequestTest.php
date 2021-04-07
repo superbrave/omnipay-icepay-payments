@@ -1,62 +1,78 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Tests\Message;
 
-use DateTime;
-use GuzzleHttp\Psr7\Request;
+use DateTimeImmutable;
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionResponse;
 use Omnipay\IcepayPayments\Tests\AbstractTestCase;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-/**
- * Class CreateTransactionRequestTest.
- */
 class CreateTransactionRequestTest extends AbstractTestCase
 {
     /**
-     * @var Request
+     * @var CreateTransactionRequest
      */
-    protected $request;
+    private $createTransactionRequest;
 
     /**
-     * Creates a new CreateTransactionRequest instance.
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->request = new CreateTransactionRequest($this->httpClient, $this->httpRequest);
-        $this->request->setBaseUrl('https://www.superbrave.nl');
-        $this->request->setSecretKey('NjRlYjM3MTctOGI1ZC00MDg4LTgxMDgtOTMyMjQ2NzVlNTM4');
-        $this->request->setContractProfileId('64eb3717-8b5d-4088-8108-93224675e538');
+        $this->createTransactionRequest = new CreateTransactionRequest($this->httpClient, $this->httpRequest);
+        $this->createTransactionRequest->setBaseUrl('https://www.superbrave.nl');
     }
 
     /**
-     * Tests if CreateTransactionRequest::getData validates the basic keys and returns an array of data.
+     * Tests if {@see CreateTransactionRequest::getData()} will return the expected data that was given as parameters.
      */
-    public function testGetData(): void
+    public function testCanGetData(): void
     {
-        $this->request->setAmountInteger(1337);
-        $this->request->setCurrencyCode('EUR');
-        $this->request->setTransactionId('2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex');
-        $this->request->setReference('2fad9b1b-a2d3-455c-bc29-b79516fd3257');
-        $this->request->setReturnUrl('https://www.superbrave.nl/return-url');
-        $this->request->setCancelUrl('https://www.superbrave.nl/cancel-url');
-        $this->request->setNotifyUrl('https://www.superbrave.nl/notify-url');
-        $this->request->setPaymentMethod('IDEAL');
-        $this->request->setIssuerCode('ABNAMRO');
-        $this->request->setLanguageCode('nl');
-        $this->request->setCountryCode('NL');
-        $this->request->setTimestamp(new DateTime('2019-03-09T12:00:00'));
-        $this->request->setDescription('2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex');
+        $this->createTransactionRequest->setContractProfileId('B4980F36-K45K-4DBF-BF6E-DG3941B2TG83');
+        $this->createTransactionRequest->setSecretKey('hJ8nnHU7yLRzgHpEGoecnQrcOs5bTv3u35yPKTrWnnQ=');
+        $this->createTransactionRequest->setAmountInteger(12345);
+        $this->createTransactionRequest->setCurrencyCode('EUR');
+        $this->createTransactionRequest->setTransactionId('5735c396-340f-4326-a71f-14910b146c7b');
+        $this->createTransactionRequest->setPaymentMethod('CREDITCARD');
+        $this->createTransactionRequest->setIssuerCode('CREDITCARD');
+        $this->createTransactionRequest->setLanguageCode('NL');
+        $this->createTransactionRequest->setCountryCode('NL');
+        $this->createTransactionRequest->setTimestamp(new DateTimeImmutable('2021-04-01T12:00:00'));
+        $this->createTransactionRequest->setDescription('Payment for order #1234567890');
+        $this->createTransactionRequest->setReturnUrl('https://www.superbrave.nl/return-url');
+        $this->createTransactionRequest->setCancelUrl('https://www.superbrave.nl/cancel-url');
+        $this->createTransactionRequest->setNotifyUrl('https://www.superbrave.nl/notify-url');
 
         $expectedData = [
+            'ConsumerFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
             'Contract' => [
-                'ContractProfileId' => '64eb3717-8b5d-4088-8108-93224675e538',
-                'AmountInCents' => 1337,
+                'ContractProfileId' => 'B4980F36-K45K-4DBF-BF6E-DG3941B2TG83',
+                'AmountInCents' => 12345,
                 'CurrencyCode' => 'EUR',
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
+                'Reference' => '5735c396-340f-4326-a71f-14910b146c7b',
+            ],
+            'Fulfillment' => [
+                'PaymentMethod' => 'CREDITCARD',
+                'IssuerCode' => 'CREDITCARD',
+                'AmountInCents' => 12345,
+                'CurrencyCode' => 'EUR',
+                'Timestamp' => '2021-04-01T12:00:00Z',
+                'LanguageCode' => 'NL',
+                'CountryCode' => 'NL',
+                'Reference' => '5735c396-340f-4326-a71f-14910b146c7b',
+                'Description' => 'Payment for order #1234567890',
+            ],
+            'IntegratorFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
             ],
             'Postback' => [
                 'UrlCompleted' => 'https://www.superbrave.nl/return-url',
@@ -65,46 +81,65 @@ class CreateTransactionRequestTest extends AbstractTestCase
                     'https://www.superbrave.nl/notify-url',
                 ],
             ],
-            'IntegratorFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
-            ],
-            'ConsumerFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
-            ],
-            'Fulfillment' => [
-                'PaymentMethod' => 'IDEAL',
-                'IssuerCode' => 'ABNAMRO',
-                'AmountInCents' => 1337,
-                'CurrencyCode' => 'EUR',
-                'Timestamp' => '2019-03-09T12:00:00Z',
-                'LanguageCode' => 'nl',
-                'CountryCode' => 'NL',
-                'Order' => [
-                    'OrderNumber' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
-                    'CurrencyCode' => 'EUR',
-                    'TotalGrossAmountCents' => 1337,
-                    'TotalNetAmountCents' => 1337,
-                ],
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
-                'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
-            ],
         ];
-        $this->assertEquals($expectedData, $this->request->getData());
+
+        $this->assertSame($expectedData, $this->createTransactionRequest->getData());
     }
 
     /**
-     * Tests if CreateTransactionRequest::sendData returns a CreateTransactionResponse.
+     * Tests if {@see CreateTransactionRequest::getData()} will return an {@see InvalidRequestException} when required
+     * keys are missing.
      */
-    public function testSendData(): void
+    public function testCannotGetDataWillReturnInvalidRequestExceptionWhenKeysAreMissing(): void
     {
+        $this->expectException(InvalidRequestException::class);
+
+        $this->createTransactionRequest->setAmountInteger(12345);
+        $this->createTransactionRequest->setCurrencyCode('EUR');
+        $this->createTransactionRequest->setTransactionId('5735c396-340f-4326-a71f-14910b146c7b');
+        $this->createTransactionRequest->setPaymentMethod('CREDITCARD');
+        $this->createTransactionRequest->setIssuerCode('CREDITCARD');
+        $this->createTransactionRequest->setLanguageCode('NL');
+        $this->createTransactionRequest->setCountryCode('NL');
+        $this->createTransactionRequest->setTimestamp(new DateTimeImmutable('2021-04-01T12:00:00'));
+        $this->createTransactionRequest->setDescription('Payment for order #1234567890');
+
+        $this->createTransactionRequest->getData();
+    }
+
+    /**
+     * Tests if {@see CreateTransactionRequest::send()} will return the {@see CreateTransactionResponse} instance.
+     */
+    public function testCanSendData(): void
+    {
+        $this->createTransactionRequest->setContractProfileId('B4980F36-K45K-4DBF-BF6E-DG3941B2TG83');
+        $this->createTransactionRequest->setSecretKey('hJ8nnHU7yLRzgHpEGoecnQrcOs5bTv3u35yPKTrWnnQ=');
+
         $data = [
+            'ConsumerFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
+            ],
             'Contract' => [
-                'ContractProfileId' => '64eb3717-8b5d-4088-8108-93224675e538',
-                'AmountInCents' => 1337,
+                'ContractProfileId' => 'eb60116a-e052-4cc1-b8c9-a7db8a9d3d14',
+                'AmountInCents' => 12345,
                 'CurrencyCode' => 'EUR',
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
+                'Reference' => '5735c396-340f-4326-a71f-14910b146c7b',
+            ],
+            'Fulfillment' => [
+                'PaymentMethod' => 'CREDITCARD',
+                'IssuerCode' => 'CREDITCARD',
+                'AmountInCents' => 12345,
+                'CurrencyCode' => 'EUR',
+                'Timestamp' => '2021-04-01T12:00:00Z',
+                'LanguageCode' => 'NL',
+                'CountryCode' => 'NL',
+                'Reference' => '5735c396-340f-4326-a71f-14910b146c7b',
+                'Description' => 'Payment for order #1234567890',
+            ],
+            'IntegratorFootprint' => [
+                'IPAddress' => '127.0.0.1',
+                'TimeStampUTC' => '0',
             ],
             'Postback' => [
                 'UrlCompleted' => 'https://www.superbrave.nl/return-url',
@@ -113,36 +148,18 @@ class CreateTransactionRequestTest extends AbstractTestCase
                     'https://www.superbrave.nl/notify-url',
                 ],
             ],
-            'IntegratorFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
-            ],
-            'ConsumerFootprint' => [
-                'IPAddress' => '127.0.0.1',
-                'TimeStampUTC' => '0',
-            ],
-            'Fulfillment' => [
-                'PaymentMethod' => 'IDEAL',
-                'IssuerCode' => 'ABNAMRO',
-                'AmountInCents' => 1337,
-                'CurrencyCode' => 'EUR',
-                'Timestamp' => '2019-03-09T12:00:00Z',
-                'LanguageCode' => 'nl',
-                'CountryCode' => 'NL',
-                'Reference' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257',
-            ],
-            'Description' => '2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex',
         ];
-        $response = $this->request->sendData($data);
+
+        $response = $this->createTransactionRequest->sendData($data);
 
         $this->assertInstanceOf(CreateTransactionResponse::class, $response);
 
-        $expectedRequest = new Request(
-            SymfonyRequest::METHOD_POST,
-            'https://www.superbrave.nl/contract/transaction'
-        );
+        $lastRequest = $this->httpClientMock->getLastRequest();
 
-        $this->assertEquals($expectedRequest->getMethod(), $this->clientMock->getLastRequest()->getMethod());
-        $this->assertEquals($expectedRequest->getUri(), $this->clientMock->getLastRequest()->getUri());
+        $this->assertSame('POST', $lastRequest->getMethod());
+        $this->assertSame('/api/contract/transaction', $lastRequest->getUri()->getPath());
+        $this->assertSame('application/json', $lastRequest->getHeader('content-type')[0]);
+        $this->assertSame('B4980F36-K45K-4DBF-BF6E-DG3941B2TG83', $lastRequest->getHeader('contractprofileid')[0]);
+        $this->assertSame('PHW9EK9lpmz1lSsqLv2PzFXrbVKaUj1i+TiCA4goKpw=', $lastRequest->getHeader('checksum')[0]);
     }
 }

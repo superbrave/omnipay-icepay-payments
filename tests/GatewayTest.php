@@ -1,155 +1,114 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Tests;
 
 use Omnipay\Common\GatewayInterface;
 use Omnipay\IcepayPayments\Gateway;
-use Omnipay\IcepayPayments\Message\CompleteAuthoriseAndCaptureRequest;
+use Omnipay\IcepayPayments\Message\CaptureRequest;
+use Omnipay\IcepayPayments\Message\CompleteAuthorizeRequest;
 use Omnipay\IcepayPayments\Message\CreateTransactionRequest;
+use Omnipay\IcepayPayments\Message\FetchTransactionRequest;
 use Omnipay\IcepayPayments\Message\RefundRequest;
-use Omnipay\IcepayPayments\Message\TransactionStatusRequest;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Tests the Icepay gateway.
- */
-class GatewayTest extends AbstractTestCase
+class GatewayTest extends TestCase
 {
     /**
      * @var GatewayInterface
      */
-    public $gateway;
+    private $gateway;
 
     /**
-     * @var array
-     */
-    private $options;
-
-    /**
-     * Creates a new Gateway instance for testing.
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
-        $this->gateway = new Gateway($this->httpClient, $this->httpRequest);
-        $this->options = [
-            'paymentMethod' => 'IDEAL',
-            'amountInCents' => 1337,
-            'currencyCode' => 'EUR',
-            'languageCode' => 'nl',
-            'countryCode' => 'NL',
-            'issuerCode' => 'ABNAMRO',
-            'reference' => '829c7998-6497-402c-a049-51801ba33662',
-        ];
+        $this->gateway = new Gateway();
     }
 
     /**
-     * Tests if Gateway::initialize sets the correct baseUrl based on the 'testMode' parameter.
-     *
-     * @dataProvider provideInitializeBaseUrlCases
-     *
-     * @param array  $parameters
-     * @param string $expectedBaseUrl
+     * Tests if {@see Gateway::initialize()} will return an instance of {@see Gateway}.
      */
-    public function testInitializeSetsBaseUrlBasedOnTestMode(array $parameters, string $expectedBaseUrl): void
+    public function testCanInitialize(): void
     {
-        $this->gateway->initialize($parameters);
-
-        $this->assertSame($expectedBaseUrl, $this->gateway->getBaseUrl());
+        $this->assertInstanceOf(Gateway::class, $this->gateway->initialize([]));
     }
 
     /**
-     * Tests if default parameters on the gateway are also correctly set on the request instance
-     * returned by Gateway::fetchTransaction.
+     * Tests if {@see Gateway::initialize()} will set the baseUrl for production.
      */
-    public function testFetchTransactionParameters(): void
+    public function testCanInitializeWillSetBaseUrlForProduction(): void
     {
-        foreach ($this->gateway->getDefaultParameters() as $key => $default) {
-            // set property on gateway
-            $getter = 'get'.ucfirst($this->camelCase($key));
-            $setter = 'set'.ucfirst($this->camelCase($key));
-            $value = uniqid();
-            $this->gateway->$setter($value);
-            $this->assertSame($value, $this->gateway->$getter());
+        $this->gateway->initialize([]);
 
-            // request should have matching property, with correct value
-            $request = $this->gateway->fetchTransaction();
-            $this->assertSame($this->gateway->$getter(), $request->$getter());
-        }
+        $this->assertSame('https://interconnect.icepay.com', $this->gateway->getBaseUrl());
     }
 
     /**
-     * Tests if Gateway::authorize will return an instance of CreateTransactionRequest.
+     * Tests if {@see Gateway::initialize()} will set the baseUrl for test.
      */
-    public function testAuthorize(): void
+    public function testCanInitializeWillSetBaseUrlForTest(): void
     {
-        $request = $this->gateway->authorize($this->options);
+        $this->gateway->initialize(['testMode' => true]);
 
-        $this->assertInstanceOf(CreateTransactionRequest::class, $request);
+        $this->assertSame('https://acc-interconnect.icepay.com', $this->gateway->getBaseUrl());
     }
 
     /**
-     * Tests if Gateway::completeAuthorize will return an instance of TransactionStatusRequest.
+     * Tests if {@see Gateway::authorize()} will return a {@see CreateTransactionRequest} instance.
      */
-    public function testCompleteAuthorize(): void
+    public function testCanAuthorize(): void
     {
-        $request = $this->gateway->completeAuthorize($this->options);
-
-        $this->assertInstanceOf(CompleteAuthoriseAndCaptureRequest::class, $request);
+        $this->assertInstanceOf(CreateTransactionRequest::class, $this->gateway->authorize([]));
     }
 
     /**
-     * Tests if Gateway::capture will return an instance of TransactionStatusRequest.
+     * Tests if {@see Gateway::completeAuthorize()} will return a {@see CompleteAuthorizeRequest} instance.
      */
-    public function testCapture(): void
+    public function testCanCompleteAuthorize(): void
     {
-        $request = $this->gateway->capture($this->options);
-
-        $this->assertInstanceOf(CompleteAuthoriseAndCaptureRequest::class, $request);
+        $this->assertInstanceOf(CompleteAuthorizeRequest::class, $this->gateway->completeAuthorize([]));
     }
 
     /**
-     * Tests if Gateway::refund will return an instance of RefundRequest.
+     * Tests if {@see Gateway::capture()} will return a {@see CaptureRequest} instance.
      */
-    public function testRefund(): void
+    public function testCanCapture(): void
     {
-        $request = $this->gateway->refund($this->options);
-
-        $this->assertInstanceOf(RefundRequest::class, $request);
+        $this->assertInstanceOf(CompleteAuthorizeRequest::class, $this->gateway->capture([]));
     }
 
     /**
-     * Returns the test cases for @see testInitializeSetsBaseUrlBasedOnTestMode.
-     *
-     * @return array
+     * Tests if {@see Gateway::refund()} will return a {@see RefundRequest} instance.
      */
-    public function provideInitializeBaseUrlCases(): array
+    public function testCanRefund(): void
     {
-        return [
+        $this->assertInstanceOf(RefundRequest::class, $this->gateway->refund([]));
+    }
+
+    /**
+     * Tests if {@see Gateway::fetchTransaction()} will return a {@see FetchTransactionRequest} instance.
+     */
+    public function testCanFetchTransaction(): void
+    {
+        $this->assertInstanceOf(FetchTransactionRequest::class, $this->gateway->fetchTransaction([]));
+    }
+
+    /**
+     * Tests if {@see Gateway::getDefaultParameters()} will return the expected array of parameters.
+     */
+    public function testGetDefaultParameters(): void
+    {
+        $this->assertSame(
             [
-                ['testMode' => false],
-                Gateway::API_BASE_URL,
+                'baseUrl' => 'https://interconnect.icepay.com',
+                'testMode' => false,
+                'contractProfileId' => '',
+                'secretKey' => '',
             ],
-            [
-                ['testMode' => true],
-                Gateway::TEST_API_BASE_URL,
-            ],
-        ];
-    }
-
-    /**
-     * Converts a string to camel case.
-     *
-     * @param string $string
-     *
-     * @return string
-     */
-    public function camelCase($string): string
-    {
-        return preg_replace_callback(
-            '/_([a-z])/',
-            function ($match) {
-                return strtoupper($match[1]);
-            },
-            $string
+            $this->gateway->getDefaultParameters()
         );
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Omnipay\IcepayPayments\Message;
 
-/**
- * The response after creating a transaction at Icepay.
- */
 class CreateTransactionResponse extends AbstractResponse
 {
     /**
@@ -12,8 +11,7 @@ class CreateTransactionResponse extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
-        return parent::isSuccessful()
-            && (isset($this->data['transactionStatusCode']) && $this->data['transactionStatusCode'] === self::RESPONSE_STATUS_STARTED);
+        return $this->getTransactionStatus() === self::TRANSACTION_STATUS_STARTED;
     }
 
     /**
@@ -21,7 +19,7 @@ class CreateTransactionResponse extends AbstractResponse
      */
     public function isRedirect(): bool
     {
-        return $this->data['acquirerRequestUri'] ?? false;
+        return isset($this->data['acquirerRequestUri']);
     }
 
     /**
@@ -30,5 +28,13 @@ class CreateTransactionResponse extends AbstractResponse
     public function getRedirectUrl(): string
     {
         return $this->data['acquirerRequestUri'] ?? '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTransactionStatus(): ?string
+    {
+        return $this->data['transactionStatusCode'] ?? null;
     }
 }
