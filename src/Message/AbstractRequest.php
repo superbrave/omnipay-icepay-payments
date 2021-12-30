@@ -323,4 +323,70 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     {
         return $this->setParameter('timestamp', $timestamp);
     }
+
+    /**
+     * Get the city.
+     *
+     * @return string
+     */
+    public function getCity(): string
+    {
+        return $this->getParameter('city');
+    }
+
+    /**
+     * Sets the city.
+     *
+     * @param string $city
+     *
+     * @return self
+     */
+    public function setCity(string $city): self
+    {
+        return $this->setParameter('city', $city);
+    }
+
+    /**
+     * Gets the postal code.
+     *
+     * @return string
+     */
+    public function getPostalCode(): string
+    {
+        return $this->getParameter('postalCode');
+    }
+
+    /**
+     * Sets the postal code.
+     *
+     * @param string $postalCode
+     *
+     * @return self
+     */
+    public function setPostalCode(string $postalCode): self
+    {
+        return $this->setParameter('postalCode', $postalCode);
+    }
+
+    /**
+     * Gets the street.
+     *
+     * @return string
+     */
+    public function getStreet(): string
+    {
+        return $this->getParameter('street');
+    }
+
+    /**
+     * Sets the street.
+     *
+     * @param string $street
+     *
+     * @return self
+     */
+    public function setStreet(string $street): self
+    {
+        return $this->setParameter('street', $street);
+    }
 }
