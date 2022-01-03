@@ -80,11 +80,29 @@ $data = [
         'IssuerCode' => 'ABNAMRO',
         'AmountInCents' => 1337,
         'CurrencyCode' => 'EUR',
+        'Consumer' => [
+            'Address' => [
+                'CareOf' => null,
+                'City' => 'Bree duh',
+                'CountryCode' => 'NL',
+                'HouseNumber' => null,
+                'PostalCode' => '4817 HX',
+                'Street' => 'Quite 18',
+            ],
+            'Category' => 'Person',
+        ],
         'Timestamp' => '2019-03-09T12:00:00Z',
         'LanguageCode' => 'nl',
         'CountryCode' => 'NL',
         'Reference' => '829c7998-6497-402c-a049-51801ba33662',
+        'Order' => [
+            'OrderNumber' => '12345AB',
+            'CurrencyCode' => 'EUR',
+            'TotalGrossAmountCents' => 1337,
+            'TotalNetAmountCents' => 1337,
+        ],
     ],
+    'Description' => '829c7998-6497-402c-a049-51801ba33662',
 ];
 
 $request = $gateway->authorize($data);
