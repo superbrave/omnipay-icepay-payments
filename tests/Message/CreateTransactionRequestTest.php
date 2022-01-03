@@ -49,6 +49,9 @@ class CreateTransactionRequestTest extends AbstractTestCase
         $this->request->setLanguageCode('nl');
         $this->request->setCountryCode('NL');
         $this->request->setTimestamp(new DateTime('2019-03-09T12:00:00'));
+        $this->request->setCity('Bree duh');
+        $this->request->setStreet('Quite 18');
+        $this->request->setPostalCode('4817 HX');
         $this->request->setDescription('2fad9b1b-a2d3-455c-bc29-b79516fd3257-random-uuid-hex');
 
         $expectedData = [
@@ -78,6 +81,17 @@ class CreateTransactionRequestTest extends AbstractTestCase
                 'IssuerCode' => 'ABNAMRO',
                 'AmountInCents' => 1337,
                 'CurrencyCode' => 'EUR',
+                'Consumer' => [
+                    'Address' => [
+                        'CareOf' => null,
+                        'City' => 'Bree duh',
+                        'CountryCode' => 'NL',
+                        'HouseNumber' => null,
+                        'PostalCode' => '4817 HX',
+                        'Street' => 'Quite 18',
+                    ],
+                    'Category' => 'Person',
+                ],
                 'Timestamp' => '2019-03-09T12:00:00Z',
                 'LanguageCode' => 'nl',
                 'CountryCode' => 'NL',
