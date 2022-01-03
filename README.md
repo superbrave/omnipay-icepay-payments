@@ -101,8 +101,8 @@ $data = [
             'TotalGrossAmountCents' => 1337,
             'TotalNetAmountCents' => 1337,
         ],
+        'Description' => '829c7998-6497-402c-a049-51801ba33662',
     ],
-    'Description' => '829c7998-6497-402c-a049-51801ba33662',
 ];
 
 $request = $gateway->authorize($data);
